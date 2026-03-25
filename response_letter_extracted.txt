@@ -1,0 +1,1360 @@
+Response to the Reviewers
+Title: SyntheticDataGenerationforJointElectricVehicleDrivingandCharging
+EventsviaDeepGenerativeNetworks
+ManuscriptReferenceNumber:
+TRC-25-01159
+Authors:
+ZhiLi
+WeiMa
+MonicaMenendez
+ZhibinChen
+MinghuiZhong
+Date: September28,2025
+
+OverallComments
+DearZhibin,
+Thank you for submitting your manuscript to Transportation Research Part C. I have com-
+pletedmyevaluationofyourmanuscript. Thereviewersrecommendreconsiderationofyour
+manuscriptfollowingmajorrevision. Iinviteyoutoresubmityourmanuscriptafteraddress-
+ingthecommentsbelow. PleaseresubmityourrevisedmanuscriptbyOct08,2025.
+Whenrevisingyourmanuscript, pleaseconsiderallissuesmentionedinthereviewers’com-
+mentscarefully: pleaseoutlineeverychangemadeinresponsetotheircommentsandprovide
+suitablerebuttalsforanycommentsnotaddressed. Pleasenotethatyourrevisedsubmission
+mayneedtobere-reviewed.
+TransportationResearchPartCvaluesyourcontributionandIlookforwardtoreceivingyour
+revisedmanuscript.
+Kindregards,
+HaiYang
+Editor
+TransportationResearchPartC
+MessagesFromAuthors
+DearEditorandReviewers,
+Wesincerelythankyouforyourconstructivefeedback,whichhassignificantlycontributedtothe
+enhancementofourmanuscript. Wehavecarefullyaddressedyourcommentsandintegratedyour
+insightful suggestions into the revised manuscript. The key modifications made are outlined as
+follows:
+• We introduced four additional evaluation metrics to more comprehensively assess model
+performance. Accordingly, the entire discussion of evaluation metrics has been revised in
+Section 3 of the revised manuscript. We have also updated the comparative analysis of dif-
+ferent models, with corresponding results now presented in Tables 6, 7, 9, and 11, together
+withthereviseddiscussions.
+• In response to the reviewer’s request for robustness analyses, we added three new subsec-
+tions (Sections 4.5, 4.6, and 4.8). These sections evaluate: (i) the convergence efficiency of
+Gibbssampling,(ii)thenecessityofmodelingtemporaldependencies,and(iii)therobust-
+nessoftheframeworkunderdifferenttrainingsetsizes.
+We respond to the comments in an itemized manner. The statement for each comment is boxed,
+followedbyourwrittenresponses. Allthepageandreferencenumbersmentionedinthereview-
+ers’ comments are kept intact based on the original manuscript, while those in our responses are
+1
+
+adaptedaspertherevisedmanuscriptunlessotherwisestated. Foryourconvenience,therevised
+sectionsinthemanuscriptarehighlightedinblue,andquotationsfromthemanuscriptaremarked
+inredthroughoutthisletter.
+Wewouldliketothankyouforcollectingandrelayingthereviewcommentstous,andhopethat
+youfindtherevisedmanuscriptsatisfactory.
+Sincerely,
+ZhibinChen
+2
+
+Response To Reviewer #1
+OverallComments
+Thispaperproposesadeepgenerativeneuralnetworktosynthesizejointelectricvehicle(EV)
+drivingandchargingeventdata. ThetopicistimelygiventhegrowingadoptionofEVs. How-
+ever,thisreviewerhasthefollowingconcerns.
+Response
+Wethankthereviewerforthepositiveassessmentofthetimelinessofourwork. Weappreciatethe
+concernsraisedandprovidedetailedpoint-by-pointresponsesbelow.
+ReviewerComment1.1
+In Section 1, several existing methods for generating synthetic EV data are introduced. It is
+suggested to include a comparative table summarizing these works across various aspects,
+such as dataset features, timeframes, data generation methods, and their respective advan-
+tagesanddisadvantagescomparedtotheproposedapproach.
+Response
+Wesincerelythankthereviewerforthisinsightfulsuggestion. Intherevisedmanuscript,wehave
+added a new comparative table (Table 1) on Page 3, which systematically summarizes represen-
+tative studies on synthetic EV data generation. The table compares existing works across dataset
+TableA1: SummaryofstudiesonEVdatasynthesis
+Literature SyntheticData Method Strength/Limitation
+Generates flexible travel chains but lacks detailed
+Wangetal.(2017) EVtravelchains NaiveBayesmethod
+chargingbehavior.
+Scales to system-level planning but ignores
+Schäubleetal.(2017) Aggregatechargingload Simulation-basedapproach
+individual-levelbehaviors.
+Captures station demand but overlooks individual
+Lahariyaetal.(2020) Chargingdemand Gaussianmixturemodel
+chargingpatterns.
+Einolander and Lahdelma Models joint event variables but not full driv-
+Chargingevents Multivariatecopula
+(2022) ing–chargingsequences.
+Links activity patterns with charging but requires
+Liuetal.(2022) Drivingandchargingevents Activity-basedsimulation
+richdataandomitsrealisticeventchains.
+Producesrealisticloadprofilesbutdoesnotcapture
+Razghandietal.(2023) Aggregatechargingload VAE-GANhybrid
+driving–chargingcoupling.
+Learnsspikystationloadpatternsbutlacksindivid-
+Geetal.(2024) Chargingstationload SeqGAN–LSTM
+ualEVrepresentation.
+Gibbssampling+Deepneu- Generatesmulti-variablechargingeventsbutnotin-
+Lietal.(2024a) Chargingevents
+ralnetworks tegrateddriving–chargingchains.
+3
+
+characteristics,datatypes,methodologicalapproaches,andhighlightstheirstrengthsandlimita-
+tionsrelativetoourframework. Forthereviewer’sconvenience,thetableisalsoreproducedabove
+(TableA1)inthisresponseletter,inadditiontoitsincorporationintheupdatedmanuscript.
+In addition, we have revised the related paragraph on Page 3 in the updated manuscript to
+explicitlyintroducethistable. Theupdatedtextishighlightedinredinthemanuscriptandreads
+asfollows:
+"ForEVdatasynthesis,weprovideasummaryinTable1,whichcategorizesexistingstudiesbytheirmethod-
+ological approaches, the types of EV data synthesized, and their respective advantages and limitations."
+ReviewerComment1.2
+A key contribution of the proposed model is the integrated generation of both driving and
+chargingevents. However,thecasestudylackscomparisonswithexistingmodelsthatgener-
+atetheseseparately. Includingsuchcomparativeevaluationswouldstrengthenthevalidation
+ofthiscontribution.
+Response
+We thank the reviewer for raising this point. We would like to emphasize that the central con-
+tribution of our framework is precisely the
+integrated generation of full individual driving–charging
+, rather than producing driving and charging events in isolation. In real-world mobility,
+sequences
+drivingandchargingareinherentlyinterdependent: whetherthenexteventisatriporacharging
+sessionwillbeaffectedbytheprecedingstateofcharge(SoC)andspatiallocation. Thissequential
+dependency structure is crucial for faithfully capturing user behavior and cannot be represented
+by models that treat driving and charging as independent processes. Therefore, a direct com-
+parisonwithsuchseparate-generationapproacheswouldnotbemeaningfulforourtask, asthey
+fundamentallylacktheabilitytomodelsequence-levelcoherencethatourframeworkisdesigned
+toaddress.
+Inthefollowing,wefurtherexaminedthenecessityofexplicitlymodelingtemporaldependen-
+cies through an ablation study, in which models were trained with different historical horizons,
+i.e., conditioning only on the most recent N events (N ∈ {1,5,10,20,30}). The resulting per-
+formance changes are summarized in Table A2. Please note that this table is evaluated using the
+revisedsetofmetrics;wekindlyreferthereviewertoComment1.6foradetailedexplanationofthe
+updated evaluation criteria before interpreting these results. Table A2 shows that incorporating
+longereventhistories(5–20events)improvesfidelity,diversity,andmemorizationcomparedwith
+the1-eventMarkovbaseline. However,gainsplateaubeyond20events,suggestingthatmostuse-
+fuldependenciesarealreadycapturedwithinamoderatehorizon. Thisalignswithreal-worldEV
+usage,wheredailyandweeklyroutines(e.g.,commutingoreveningcharging)dominate,making
+medium-rangedependenciesbothsufficientandeffective.
+Inaddition,wehaveaddedasensitivityanalysisontemporaldependencylengthintherevised
+manuscript. ThisnewsubsectionisincludedonPage33forclarity. Forthereviewer’sconvenience,
+we reproduce the newly added paragraph below. The corresponding results are reported in Ta-
+4
+
+TableA2: Comparisonofresultsunderdifferenttemporaldependencyhorizons
+Horizon Fidelity Diversity Memorization
+ρ ρ Joint-KL Precision Recall Coverage ρ
+1 2 3
+1events 0.29 0.58 0.99 0.69 0.88 0.79 0.78
+5events 0.23 0.53 0.97 0.71 0.94 0.80 0.81
+10events 0.20 0.51 0.94 0.76 0.93 0.82 0.84
+20events 0.20 0.52 0.95 0.75 0.94 0.82 0.83
+30events 0.19 0.50 0.93 0.77 0.95 0.83 0.86
+bleA2(i.e.,Table8intherevisedmanuscript),whichremainsthesameaspresentedabove.
+“Wefurtherconductedasensitivityanalysisonthetemporaldependencylengthtoexaminehow
+muchhistoricalcontextisrequiredforeffectivegeneration. Specifically,modelsweretrainedwith
+horizonsof1,5,10,20,and30precedingevents(Table8). Theresultsshowthatextendingthehori-
+zonlengthconsistentlyimprovesfidelityanddiversity: movingfromafirst-orderMarkovmodel
+(1event)toa10-eventdependencysignificantlyreducesjointerrorsandimprovesrecallandcov-
+erage. However,beyond20events,thegainsbecomemarginal,andperformancemetricsapproach
+aplateau.
+Thispatterncanbeexplainedbytheinherentregularityinindividualtravelandchargingbe-
+haviors. Mostusersfollowrelativelystabledailyroutines(e.g., commutingandovernightcharg-
+ing), so the critical dependencies can already be captured within a moderate horizon. Longer
+temporal windows add limited information, as distant events often provide redundant or weak
+signals. Overall, the sensitivity analysis confirms that while temporal dependency is critical for
+generatingcoherentcharging–drivingsequences,themodeldoesnotrequireexcessivelylonghis-
+tories,whichsupportstractabilityandscalability."
+5
+
+ReviewerComment1.3
+Threeindicatorsareselectedtoassessthemodel’sgenerativecapabilitiesandprivacyprotec-
+tion performance. Please clarify the rationale behind choosing these specific indicators and
+discusswhetherotherrelevantmetricswereconsidered.
+Response
+Thank you very much for the helpful suggestion. We first clarify the rationale and our metric
+choicesasfollows.
+• ρ compares univariate marginals; uses Jensen–Shannon divergence for discrete variables
+1
+and 1-Wasserstein distance for continuous variables—both are widely used for evaluating
+synthetic tabular data (e.g., Hudovernik et al., 2024; Shi et al., 2025; Stenger et al., 2024).
+Thesechoicesaresymmetric,interpretable,robusttosparsecategories.
+• ρ evaluatesderivedand/orconditionedvariablesthatcapturejointrelationshipsbetween
+2
+multiple features. For instance, speed is derived as distance divided by driving duration,
+and charging power as the change in SoC over charging duration. We further stratify these
+derivedvariablesbydiscreteattributessuchasbatterycapacity,userlabel,andspatialindex,
+therebyenablingthecomparisonofconditionaldistributionsacrossmeaningfulsubgroups.
+For each subgroup, we compute distributional distances using Jensen–Shannon divergence
+for discrete outcomes and 1-Wasserstein distance for continuous outcomes. In this way, ρ
+2
+transformshigh-dimensionaljointdependenciesintophysicallyinterpretablevariablesthat
+reflectbothbehavioralrealismandsubgroupconsistency.
+• ρ evaluates whether the generative model memorizes training data rather than learning
+3
+generalizable patterns. The key idea is to use the closest distance ratio between training,
+validation, and synthetic samples as an indicator of potential leakage, a criterion that has
+become common in evaluating generative models (van den Burg and Williams, 2021; Fang
+et al., 2024; Shi et al., 2025). For each training instance, we compute its nearest-neighbor
+distancetoboththevalidationsetandthesyntheticset. Ifthedistancetosyntheticsamples
+is systematically smaller than that to validation samples, i.e., ρ > 1, it suggests that the
+3
+model may have overfit or memorized the training data. Conversely, ρ ≈ 1 indicates good
+3
+generalization,whilevaluesbelow1mayimplyunderfitting.
+Inaddition,aftercarefullyreviewingrelevantliteratureandconsideringthefeedbackfromRe-
+viewer2,weexpandourevaluationframeworkbyincludingseveraladditionalmetrics,organized
+alongthreekeyaspects: fidelity,diversity,andmemorization.
+• Fidelity: measureshowcloselythegenerateddataresembletherealdatadistribution. High
+fidelity means that synthetic samples are realistic and statistically consistent with the real
+dataset. Inadditiontoouroriginalmetrics,i.e.,ρ andρ ,weincorporatethekNN–KLdiver-
+1 2
+genceestimatorformixed-typedistributions(Ross,2014;Gaoetal.,2017;Wangetal.,2009),
+whichcapturesconditionaldependenciesbeyondmarginalorderivedvariables. Wedidnot
+adopt kernel density estimation (KDE)–based approaches (Moon et al., 2017), since they
+6
+
+typicallysufferfromthecurseofdimensionality,andbecomecomputationallyexpensivefor
+large-scaletabulardatasets. WealsoadoptthekNN-basedprecisionmetric(Kynkäänniemi
+et al., 2019; Naeem et al., 2020; Cheema & Urner, 2023), which quantifies the proportion of
+generated samples lying within the support of the real data distribution. Compared with
+earlierapproachesthatdefinedprecisionusingafixed-radiusϵball(Sajjadietal.,2018),the
+kNNformulationisbothmorerobusttoscaling,adaptivetoheterogeneousdatadensity,and
+computationally more scalable for large mixed-type tabular datasets. Together, these mea-
+sures strengthen the fidelity assessment by combining global distributional similarity and
+localneighborhoodrealism.
+• Diversity: evaluateshowwellthegenerateddatacapturethefullvariabilityoftherealdis-
+tribution,includingraremodesandlessfrequentpatterns. Highdiversityindicatesthatthe
+generator avoidsmode collapse and reproducesthe spread ofreal-world behaviors. To this
+end, we include the kNN-based recall and coverage metrics (Naeem et al., 2020; Cheema
+& Urner, 2023). Recall quantifies the proportion of real samples supported by generated
+samples,whilecoverageemphasizeswhethergeneratedsamplesspandistinctmodesofthe
+real distribution. These measures provide a richer characterization of diversity than ρ or
+1
+ρ alone. We did not adopt KDE–based diversity measures (Moon et al., 2017) or vision-
+2
+oriented scores such as Fréchet Inception Distance (Heusel et al., 2017), since they either
+sufferfromscalabilityissuesinhigh-dimensionaltabulardataordependonpretrainedfea-
+tureextractorsthatarenotwelldefinedoutsidetheimagedomain. Incontrast, kNN-based
+recallandcoverageareparameter-light, density-adaptive, anddirectlyapplicabletomixed-
+typedatasets.
+• Memorization: assesseswhetherthegenerativemodelhasmemorizedtrainingsamplesrather
+than learning generalizable patterns. A robust model should balance fidelity and diversity
+withoutleakingtrainingdata. Inadditiontoourρ metricbasedontheclosestdistanceratio
+3
+(vandenBurg&Williams,2021;Fangetal.,2024;Shietal.,2025),wealsoreviewedalterna-
+tiveapproachesformemorizationassessmentproposedintheliterature,suchasprivacyrisk
+auditsandadversarialevaluationprotocols(Stadleretal.,2022;Shokrietal.,2017;Hilprecht
+et al., 2019). These methods are primarily effective in domains such as image data synthe-
+sis and medical record sharing, where adversarial risk auditing and membership inference
+attackshavebeenextensivelystudied. Inourcase,wefocusontabularmixed-typeEVdata,
+where such setups are less practical and interpretable. We therefore retain ρ as a practical
+3
+andinterpretableproxyformemorizationrisk.
+Wehaveupdatedourresultsandmanuscriptaccordingtothenewevaluationstandards. Specif-
+ically,Table6(Page25,updated),Table7(Page26,updated),Table9(Page34,updated),andTable
+11(Page36,updated)havebeenrevisedtoincorporatetheadditionalfidelity,diversity,andmem-
+orization metrics. In addition, the entire subsection on Evaluation Metrics has been thoroughly
+rewritten and updated (see Page 19 in the revised manuscript). For the reviewer’s convenience,
+wereproducetheupdatedsubsectionbelow:
+7
+
+3. EvaluationMetrics
+To measure the performance of the model, we organize our evaluation framework into three categories: (i)
+fidelity,(ii)diversity,and(iii)memorization.
+3.1Fidelity
+Fidelity reflects how closely the generated data resemble the ground truth. We first evaluate fidelity using
+univariateandmultivariatedistributionaldistances. Thefirstmetricisdefinedbyρ asfollows:
+1
+(cid:88) (cid:88)
+ρ = D (P (x )∥Q(x ))+ W (u ,v ), (19)
+1 js i i j j
+i∈A j∈B
+whereAisthesetofdiscretevariablesandBisthesetofcontinuousvariables. Fordiscretevariables,weuse
+Jensen-ShannonDivergence(Lin,2002),i.e.,D (·),tomeasurethedistributionofsamplesP(x )andthe
+js i
+ground truth distribution Q(x ). For continuous variables, we use the Wasserstein distance (Arjovsky et
+i
+al., 2017), i.e., W(·), to measure the distribution of variables. The distribution of the Wasserstein distance
+isasfollows:
+(cid:90) +∞
+W(u,v) = |U(x)−V(x)|dx, (20)
+−∞
+whereU(x)andV(x)aretheestimatedCDFsoftherespectivedistributionsuandv. Themetricρ computes
+1
+themeanperformanceoftheunivariatedistributions,andthencontraststhisaverageacrossvariousmodels.
+For the multivariate distribution, we consider the following variables in Table 4. These variables are
+derivedfrommultiplefactors;forinstance,drivingspeediscalculatedbydividingthetraveldistancebythe
+driving duration, and charging power is determined by the difference between the end SoC and start SoC
+divided by the charging duration. For discrete variables such as user label, geographic index, and battery
+capacity,wefirstgroupthedata,andthencomparethecontinuousvariablesacrossthesegroups. Thisanalysis
+includes,forinstance,thespatiotemporaldistributionsofvehiclespeed,chargingpower,anddrivingevents.
+Thisapproachallowsustotransformtheassessmentofmultivariatedistributionsintomeaningfuluni-
+variatedistributions. Accordingly,ρ canbedefinedasfollows:
+2
+(cid:88) (cid:88)
+ρ = D (P(x ) ∥ Q(x ))+ W(u ,v ), (21)
+2 js i i j j
+i∈C j∈D
+whereC isthesetofderivedcontinuousvariablesandD isthesetofderiveddiscretevariables.
+Tofurtherstrengthentheanalysisofmixed-typejointdistributions,wehaveincorporatedthek-nearest
+neighbors(kNN)basedKL-divergenceestimator,whichhasbeenwidelyadoptedfordiscrete–continuousdata
+(Ross, 2014; Gao et al., 2017; Zhao and Lai, 2020). Compared to kernel density estimation (KDE)–based
+approaches(Moonetal., 2017)andkernelmeanembeddingmethodssuchasmaximummeandiscrepancy
+(MMD)(Grettonetal.,2012),thekNNestimatoriscomputationallymorescalableand,inourexperiments,
+feasibleforlarge-scaledatasets.
+The key idea is to decompose the joint distribution P(X ,X ) of discrete variables X and continuous
+d c d
+variablesX intoconditionalcomponents:
+c
+D (P∥Q) = (cid:88) P(x )D (cid:0) P(X | X = x )∥Q(X | X = x ) (cid:1) +D (P(X )∥Q(X )),] (22)
+KL d KL c d d c d d KL d d
+x
+d
+8
+
+where P denotes the empirical distribution of the real dataset and Q denotes that of the synthetic dataset.
+Thefirsttermevaluatestheconditionalcontinuousdistributionsgiveneachdiscreteconfiguration, andthe
+secondcomparesthediscretemarginals.
+For the discrete part, we apply Dirichlet-smoothed frequency estimates (Bishop and Nasrabadi, 2006;
+Murphy,2013):
+n +α
+P(x ) = x d , (23)
+d
+N +αK
+all s
+where n is the count of subgroup x , N is the total number of samples, K the number of subgroups,
+x d d all s
+andαthesmoothingparameter.
+(cid:0) (cid:1)
+Fortheconditionalcontinuouspart,weestimateD P(X | x )∥Q(X | x ) withineachsubgroup
+KL c d c d
+x using the kNN estimator proposed by Wang et al. (2009), which has since been widely adopted for
+d
+multivariate distributions (Singh and Poczos, 2016; Noshad et al., 2017; Ryu et al., 2022; Czy˙z et al.,
+2023):
+D(cid:98)KL (P∥Q) = d
+c
+· 1 (cid:88)
+Nr
+log ν i +log N g , (24)
+N ψ N −1
+r i r
+i=1
+whered isthedimensionofX , N isthenumberofsamplesdrawnfromP, N isthenumberofsamples
+c c g r
+drawn from Q, ψ is the distance from x to its k-th nearest neighbor in P, and ν is the corresponding
+i i i
+distanceinQ.
+Inaddition,followingpriorworkonprecision–recallbasedevaluationforgenerativemodels(Kynkaan-
+niemietal.,2019;Naeemetal.,2020;CheemaandUrner,2023),wealsoincorporatethekNNbasedprecision
+metricasacomplementaryfidelitymeasure. Precisionquantifiestheproportionofgeneratedsamplesthatlie
+withinthesupportoftherealdatadistribution. Formally,
+1 (cid:88)
+Ng
+Precision = 1(∃r ∈ R : d(g ,r ) ≤ d (r )), (25)
+j i j k j
+N
+g
+i=1
+whereG = {g } Ng denotesthesetofgeneratedsamples,R = {r }Nr isthesetofrealsamples,andd (r )
+i i=1 j j=1 k j
+isthedistancefromr toitsk-thnearestneighborinR. Thedistanced(g ,r )betweenageneratedsample
+j i j
+g andarealsampler isdefinedformixedcontinuous–discretefeaturesas
+i j
+(cid:115)
+d(g ,r ) = (cid:88)(cid:0) g −r (cid:1)2 + (cid:88) 1 (cid:0) g ̸= r (cid:1) , (26)
+i j i,a j,a i,b j,b
+a∈A b∈B
+where A denotes the set of continuous features and B the set of discrete features. For discrete attributes,
+similarity is assessed using the indicator function 1(g ̸= r ), which equals 1 if the two samples differ
+i,b j,b
+ondiscretefeaturesand0otherwise. Takentogether,thismixed-typedistanceenablestheprecisionmetricto
+complement ρ , ρ , and the kNN–KL divergence by providing a direct notion of fidelity grounded in local
+1 2
+neighborhoodsupport.
+3.2Diversity
+Diversity captures the extent to which the generated data cover the support of the real data distribution,
+therebyreflectingthemodel’sabilitytoreproducethefullvarietyofreal-worldpatternsratherthanconcen-
+tratingononlythemostcommonones. Toquantifydiversity,weincorporatetwocomplementarykNNbased
+measures: recallandcoverage.
+9
+
+Recall measures the proportion of real samples that lie within the support of the generated distribution,
+andisthereforecomplementarytoprecision. Formally, followingKynkaanniemietal. (2019), Naeemetal.
+(2020),andCheemaandUrner(2023),recallisdefinedas
+1 (cid:88)
+Nr
+Recall = 1(∃g ∈ G : d(r ,g ) ≤ d (g )), (27)
+i j i k i
+N
+r
+j=1
+whered (g )isthedistancefromg toitsk-thnearestneighborinG. Ahighrecallvalueindicatesthatthe
+k i i
+generateddatacoveralargeportionoftherealdataspace,includinglessfrequentpatterns.
+While recall counts whether each real sample is supported by any generated sample, coverage measures
+how many distinct real samples are captured within the k-nearest-neighbor balls of generated samples. In
+otherwords,coverageemphasizeswhetherthegeneratorisabletorepresentdifferentmodesoftherealdistri-
+bution. Formally,coverageisdefinedas:
+1 (cid:88)
+Nr
+Coverage = 1(∃g ∈ G : d(g ,r ) ≤ d (r )), (28)
+i i j k j
+N
+r
+j=1
+where d (r ) is the distance from r to its k-th nearest neighbor in R. This metric highlights whether the
+k j j
+generatorreproducesthediversityofmodespresentintherealdataset.
+3.3Memorization
+The third aspect evaluates whether the generative model memorizes the training data instead of learning
+generalizable patterns. The key idea, which has been widely adopted in the literature (van den Burg and
+Williams, 2021; Fang et al., 2024; Shi et al., 2025), is to use the closest distance ratio between training,
+validation, and generated samples to assess whether the model has leaked training data. Following (van
+den Burg and Williams, 2021), we partition the dataset into a training set R , a validation set R , and a
+t v
+generatedsetG.
+For each training sample r ∈ R , we compute its nearest-neighbor distance to both the validation set
+t t
+andthegeneratedset. Thememorizationscoreρ isdefinedas
+3
+ρ = 1 (cid:88) min rv∈Rv d(r t ,r v ) , (29)
+3
+|R | min d(r ,g)
+t g∈G t
+rt∈Rt
+whered(·,·)denotesthesamemixed-typedistancedefinedinEq. 28. Intuitively,ifgeneratedsamplessetG
+areunnaturallyclosetothetrainingsamplesR comparedtothevalidationsamplesR ,theratioρ willex-
+t v 3
+ceed1,indicatingpotentialmemorization. Conversely,ifρ < 1,thegenerateddataarefartherfromR than
+3 t
+fromR ,suggestingunderfitting. Anidealmodelachievesρ ≈ 1,whichindicatesabalancebetweenmem-
+v 3
+orizationandgeneralization. Togetherwithothermetrics,thismeasurecompletesourevaluationframework
+forgenerativemodels.
+Referencelist:
+• Bishop,C.M.,&Nasrabadi,N.M.(2006). Patternrecognitionandmachinelearning(Vol. 4,
+No. 4,p. 738). NewYork: springer.
+10
+
+• Cheema,F.,&Urner,R.(2023,April). Precisionrecallcover: Amethodforassessinggenera-
+tivemodels. In (pp. 6571–6594).
+InternationalConferenceonArtificialIntelligenceandStatistics
+PMLR.
+• Czyż, P., Grabowski, F., Vogt, J., Beerenwinkel, N., & Marx, A. (2023). Beyond normal: On
+theevaluationofmutualinformationestimators. Advancesinneuralinformationprocessing
+systems,36,16957-16990.
+• Fang,Z.,Jiang,Z.,Chen,H.,Li,X.,&Li,J.(2024). Understandingandmitigatingmemoriza-
+tionindiffusionmodelsfortabulardata. .
+arXivpreprintarXiv:2412.11044
+• Gao, W., Kannan, S., Oh, S., & Viswanath, P. (2017). Estimating mutual information for
+discrete-continuousmixtures. Advancesinneuralinformationprocessingsystems,30.
+• Gretton, A., Borgwardt, K. M., Rasch, M. J., Schölkopf, B., & Smola, A. (2012). A kernel
+two-sampletest. Thejournalofmachinelearningresearch,13(1),723-773.
+• Heusel,M.,Ramsauer,H.,Unterthiner,T.,Nessler,B.,&Hochreiter,S.(2017). Ganstrained
+by a two time-scale update rule converge to a local nash equilibrium. Advances in neural
+informationprocessingsystems,30.
+• Hilprecht, B., Härterich, M., &Bernau, D.(2019). Montecarloandreconstructionmember-
+ship inference attacks against generative models. Proceedings on Privacy Enhancing Tech-
+nologies.
+• Hudovernik, V., Jurkovič, M., & Štrumbelj, E. (2024). Benchmarking the fidelity and utility
+ofsyntheticrelationaldata.
+• Murphy,K.P.(2012). Machinelearning: aprobabilisticperspective. MITpress.
+• Moon, K. R., Sricharan, K., & Hero, A. O. (2017, June). Ensemble estimation of mutual in-
+formation. In2017IEEEInternationalSymposiumonInformationTheory(ISIT)(pp. 3030-
+3034). IEEE.
+• Noshad,M.,Moon,K.R.,Sekeh,S.Y.,&Hero,A.O.(2017). Directestimationofinformation
+divergence using nearest neighbor ratios. In 2017 IEEE International Symposium on Infor-
+mationTheory(ISIT)(pp. 903-907). IEEE.
+• Ross,B.C.(2014). Mutualinformationbetweendiscreteandcontinuousdatasets. PloSone,
+9(2),e87357.
+• Ryu, J. J., Ganguly, S., Kim, Y. H., Noh, Y. K., & Lee, D. D. (2022). Nearest neighbor den-
+sityfunctionalestimationfrominverseLaplacetransform. IEEETransactionsonInformation
+Theory,68(6),3511-3551.
+• Shi,R.,Wang,Y.,Du,M.,Shen,X.,&Wang,X.(2025). Acomprehensivesurveyofsynthetic
+tabulardatageneration. arXivpreprintarXiv:2504.16506.
+11
+
+• Shokri,R.,Stronati,M.,Song,C.,&Shmatikov,V.(2017,May). Membershipinferenceattacks
+againstmachinelearningmodels. In2017IEEEsymposiumonsecurityandprivacy(SP)(pp.
+3-18). IEEE.
+• Singh, S., & Póczos, B. (2016). Finite-sample analysis of fixed-k nearest neighbor density
+functionalestimators. Advancesinneuralinformationprocessingsystems,29.
+• Stadler, T., Oprisanu, B., & Troncoso, C. (2022). Synthetic data–anonymisation groundhog
+day. In31stUSENIXSecurit
+• Stenger,M.,Leppich,R.,Foster,I.,Kounev,S.,&Bauer,A.(2024). Evaluationiskey: Asurvey
+onevaluationmeasuresforsynthetictimeseries.
+• vandenBurg, G., &Williams, C.(2021). Onmemorizationinprobabilisticdeepgenerative
+models. ,34,27916–27928.
+AdvancesinNeuralInformationProcessingSystems
+• Wang, Q., Kulkarni, S. R., & Verdú, S. (2009). Divergence estimation for multidimensional
+densitiesviak-Nearest-Neighbordistances. IEEETransactionsonInformationTheory,55(5),
+2392-2405.
+• Zhao, P., & Lai, L. (2020). Minimax optimal estimation of KL divergence for continuous
+distributions. IEEETransactionsonInformationTheory,66(12),7787-7811.
+ReviewerComment1.4
+Whilebothcharginganddrivingeventsaremodeled,thepaperdoesnotaddresswaitingtimes
+orqueuingatpublicchargingstations,whicharecommoninreal-worldscenarios. Howdoes
+themodelaccountfororplantoincorporatethisaspect?
+Response
+Thank you for raising this important point. We acknowledge that our current framework does
+notmodelexplicitqueuingbecausetheon-boarddatasetdoesnotrecordpre-plugwaitingtimeor
+queuelengthatpublicchargers;hence,thisquantitycannotberecoveredexpost.
+However,ourframeworkcaneasilyincorporatequeuinginaplug-and-playmannerbyadding
+a featuretotheeventschema:
+single
+
+0, ifevent_type = driving,
+waiting_time = withw ≥ 0.
+w, ifevent_type = charging,
+This design mirrors our existing ‘distance’ feature (which is 0 for charging events and non-
+negative for driving events). Implementation-wise, we only add one output head and reuse the
+existing constraint mechanism used for waiting_time. To address this point, we have explicitly
+outlinedtheplannedextensionintheConclusion(Page38oftherevisedmanuscript).
+12
+
+"Anotherpromisingdirectionistoenrichtheeventschemawithadditionalphysicallygroundedfeatures,such
+as battery degradation (state-of-health dynamics) and pre-charging waiting time at public stations, which
+wouldallowthemodeltocapturelong-termperformancedecayandcongestioneffectsmorerealistically."
+ReviewerComment1.5
+Batterycapacitiesaretreatedasstaticinherentfeatures. Howdoesthemodelhandlebattery
+degradation and performance variations under extreme environmental conditions, such as
+veryhighorlowtemperatures?
+Response
+Wesincerelythankthereviewerforraisingthisimportantpointregardingbatterydegradationand
+performance variations under extreme environmental conditions. Our framework is fully data-
+driven, meaning that the model learns usage patterns directly from the data. As noted earlier, if
+ambienttemperature(orrelatedcovariates)isincludedasaninputfeature,themodelcancapture
+shiftsinenergyconsumptionconditionalontemperature,therebyadaptingtobothhighandlow
+temperatureoperatingconditions. Thishighlightstheflexibilityofourframeworktobeextended
+tosuchscenarios.
+0.21
+0.20
+0.19
+0.18
+0 2 4 6 8 10 12 14 16 18 20 22
+Hour of Day
+)mk/hWk(
+etaR
+noitpmusnoC
+ygrenE
+Original data
+Generated data
+FigureA1: Comparisonofaveragehourlyenergyconsumptionratebetweenoriginalandgenerated
+data
+Even without explicitly modeling degradation, we examined 24-hour (Figure A1) variations
+andseasonal(FigureA2)inenergyconsumptionrate. Inourpreviousstudy(Lietal., 2023), we
+showed that both seasonal and diurnal variations in energy consumption are closely associated
+13
+
+with ambient temperature. Consistent with that finding, Figure A2 compares the distributions
+of energy consumption rate (kWh/km) across different seasons, while Figure A1 illustrates the
+hourlyconsumptionpatternswithinaday. Fromthefigures,wefindthattheenergyconsumption
+distributionsacrossdifferentseasonsandtheconsumptiontrendsoverthe24-hourcyclearelargely
+consistent between the original and generated data. This indicates that our model is indeed able
+tocaptureandreproducecertainenvironmentalandtemporaldifferences.
+0.6
+0.5
+0.4
+0.3
+0.2
+0.1
+0.0
+Spring Summer Autumn Winter
+Season
+)mk/hWk(
+etaR
+noitpmusnoC
+ygrenE
+Original data
+Generated data
+FigureA2: Comparisonofseasonalenergyconsumptionratebetweenoriginalandgenerateddata
+Regarding battery degradation due to aging, since our dataset spans only about 16 months
+and does not include detailed state-of-health indicators, the model’s ability to capture long-term
+degradationeffectsisinherentlyrestricted. Weacknowledgethatbatterydegradationisindeeda
+limitation of our current work, which has been noted in the conclusion of the manuscript, and
+we believe that if such features were available, our framework could be naturally extended to
+capture degradation-related consumption patterns as well. To incorporate such limitations, simi-
+larly, wehaveexplicitlyoutlinedtheplannedextensionintheConclusion(Page38oftherevised
+manuscript).
+"Anotherpromisingdirectionistoenrichtheeventschemawithadditionalphysicallygroundedfeatures,such
+as battery degradation (state-of-health dynamics) and pre-charging waiting time at public stations, which
+wouldallowthemodeltocapturelong-termperformancedecayandcongestioneffectsmorerealistically."
+Referencelist:
+• Li,Z.,Xu,Z.,Chen,Z.,Xie,C.,Chen,G.,&Zhong,M.(2023). Anempiricalanalysisofelectric
+vehicles’ charging patterns. Transportation Research Part D: Transport and Environment,
+117,103651.
+14
+
+ReviewerComment1.6
+Whyis"endSoC"adynamicgenerativefeatureratherthanadynamiciterativefeature?
+Response
+Thanksforthecomment. TheendSoCistreatedasa ratherthananiterativeone
+generativefeature
+becauseitrepresentstheevent-leveloutcometobesynthesized. GiventhestartSoCofadrivingor
+chargingevent,themodelgeneratesthecorrespondingendSoC,whichdirectlyreflectshowmuch
+energy is consumed or replenished during that event. Once generated, this end SoC naturally
+becomes the start SoC of the subsequent event through state propagation. In other words, the
+generation
+happenswithintheevent(start→end),whilethe
+iteration
+occursimplicitlyacrossevents
+whenthegeneratedendSoCiscarriedovertothenextevent. Thisdesigncleanlyseparatesevent-
+levelgenerationfromsequence-levelstatepropagation.
+ReviewerComment1.7
+Onpage21,thereisatypo: "Lietal. (2023)„"containsanextracomma.
+Response
+We thank the reviewer for pointing out this typographical error. The extra comma in “Li et al.
+(2023),” on page 21 (original manuscript) has been corrected on Page 24 (updated manuscript),
+andwehavecarefullycheckedtherevisedversionforsimilarissues.
+ReviewerComment1.8
+In Figure 5, the metrics ρ and ρ are summed to determine the optimal transformer model
+1 2
+layer. Since these metrics may have different units, does summing them directly provide a
+meaningfulmeasure?
+Response
+We thank the reviewer for raising this important point. You are correct that directly summing ρ
+1
+andρ maynotprovideameaningfulmeasure,asthemetricsdifferinunitsandscales. Therefore,
+2
+we chose not to use their summation and instead adopted a radar chart (see Figure A3) in the
+revised manuscript. Specifically, in line with the reviewer’s earlier suggestion, we expanded our
+evaluation methodology to include additional fidelity, diversity, and memorization metrics, and
+re-rantheexperimentsaccordingly. TheupdatedresultsarepresentedinTableA3below.
+15
+
+TableA3: Comparisonofresultsfordifferenttransformerparameterconfigurations
+Layer dmodel Fidelity Diversity Memorization Param. Size(M)
+ρ ρ Joint-KL Precision Recall Coverage ρ
+1 2 3
+16 64 0.47 0.66 1.03 0.66 0.82 0.79 0.77 1.15
+32 64 0.38 0.55 0.99 0.69 0.91 0.81 0.80 1.95
+48 64 0.21 0.51 0.95 0.73 0.92 0.82 0.85 2.75
+64 64 0.17 0.49 0.92 0.78 0.97 0.84 0.88 3.55
+16 128 0.46 0.67 1.05 0.65 0.80 0.80 0.75 3.91
+32 128 0.23 0.50 0.95 0.76 0.94 0.82 0.85 7.08
+48 128 0.18 0.47 0.92 0.80 0.95 0.82 0.89 10.26
+64 128 0.21 0.48 0.98 0.76 0.93 0.81 0.87 13.43
+As the revised results indicate, the main conclusion remains unchanged. The results confirm
+that depth is the primary driver of performance improvements: increasing layers consistently re-
+duces errors and boosts recall and coverage, while width contributes only moderate and some-
+times inconsistent gains, mainly in precision and memorization. The 64-layer, dmodel = 64 con-
+figurationstandsoutasparticularlyefficient,achievinglowerrors,highrecall,andstrongmemo-
+rization with only about 3.5 million parameters. Wider and deeper variants, such as the 48-layer,
+dmodel = 128, provide relatively balanced performance across all metrics, but at the expense of
+substantiallylargerparametercounts.
+To provide a more comprehensive visualization, we additionally present radar charts (Fig-
+ureA3)comparingallconfigurations.
+Joint-KL Layer 16, dmodel 64
+Layer 32, dmodel 64
+Layer 48, dmodel 64
+2 Layer 64, dmodel 64
+Layer 16, dmodel 128
+Layer 32, dmodel 128
+Layer 48, dmodel 128
+Precision Layer 64, dmodel 128
+1
+Recall
+3
+Coverage
+FigureA3: ComparisonofTransformerdepthandwidthconfigurations
+Since the metrics differ in both scale and optimization direction, all values are normalized to
+therange[0,1]priortoplotting. Forerror-type(smaller-is-better)measures,weapplyaninverted
+16
+
+min–maxtransformation:
+x−x
+s = 1− min , (A1)
+x −x
+max min
+whereasforlarger-is-bettermeasures(Precision,Recall,Coverage,ρ ),weusethestandardmin–max
+3
+scaling:
+x−x
+s = min . (A2)
+x −x
+max min
+Similarly,wehaveupdatedthemanuscripttoexplicitlyreflectthisextension. Thereviseddis-
+cussionhasbeenaddedonPage25oftherevisedmanuscript, wheretheupdatedFigure5corre-
+spondstoourFigureA3.
+"
+Weevaluatedtransformermodelsbysystematicallyvaryingdepth(numberoflayers)andwidth(em-
+beddingsize,d ),using8-headattention. AssummarizedinTable6,performanceimprovementsarepri-
+model
+marilydrivenbydepth: addinglayersconsistentlyreducesmarginalandjointerrorswhileenhancingrecall
+andcoverage,whereaswideningtheembeddingdimensionprovidesonlymodestandsometimesinconsistent
+gains,mainlyinprecisionandmemorization. Tocapturethesetrendsmoreholistically,wevisualizethere-
+sultswithradarcharts(seeFigure5),whereeachaxiscorrespondstooneoftheevaluationmetrics—fidelity
+(ρ ,ρ ,Joint-KL,Precision),diversity(Recall,Coverage),andmemorization(ρ ). Sincethemetricsdiffer
+1 2 3
+in scale and optimization direction, they are normalized to [0,1], with error-type measures inverted so that
+larger values uniformly indicate better performance. The radar plots show that the 64-layer, d = 64
+model
+configuration already spans much of the performance space, achieving low errors, high recall, and strong
+memorization with only about 3.5M parameters. This demonstrates that deep but moderately wide trans-
+formerscanapproximatetheperformanceofmuchlargermodelswhileavoidingthesteepcomputationalcosts
+"
+ofwidthscaling.
+ReviewerComment1.9
+Table 6 shows that all Transformer models have 64 layers, whereas all LSTM models have
+only24layers. UsingfewerlayersforLSTMmodelsmaynegativelyimpacttheirperformance,
+potentiallybiasingthecomparison. Pleasecomment.
+Response
+Wethankthereviewerforthisconstructivecomment. Youarecorrectthattheuseof24-layerLSTM
+models in our original experiments may have limited their representational capacity compared
+to the 64-layer Transformer models, potentially biasing the comparison. In our initial setup, we
+adopted24-layerLSTMswithahiddensizeof128tokeeptheoverallparametercountcomparable
+to that of the 64-layer Transformer models. However, we acknowledge that depth plays a crucial
+role in model performance, and a shallower LSTM configuration may not provide a fair basis for
+comparison.
+Toaddressthisconcern,were-rantheexperimentsbyincreasingthedepthoftheLSTMmodels
+to 64 layers, while slightly enlarging their hidden dimension so that the overall parameter sizes
+remaincomparabletotheTransformerconfigurations. Inaddition,followingthereviewer’searlier
+17
+
+suggestion,wealsoincorporatedadditionalevaluationmetricsbeyondρ andρ toprovideamore
+1 2
+comprehensiveassessmentofmodelperformance. Therevisedresults,summarizedinTableA4,
+TableA4: Comparisonofresultsfordifferentgenerativemodelconfigurations
+Model Layer dmodel Fidelity Diversity Memorization Param.Size(M)
+ρ1 ρ2 Joint-KL Precision Recall Coverage ρ3
+Transformer+Gibbs 64 64 0.17 0.49 0.92 0.78 0.97 0.84 0.88 3.55
+Transformer+WGAN 64 64 0.12 1.04 1.18 0.67 0.83 0.89 0.76 3.49
+Transformer+Bayes 64 64 0.92 0.97 1.21 0.71 0.65 0.78 0.67 3.37
+Transformer+VAE 64 64 0.81 2.06 1.35 0.63 0.95 0.79 0.70 6.74
+LSTM+Gibbs 64 80 0.20 0.57 0.97 0.73 0.92 0.82 0.80 3.67
+LSTM+WGAN 64 80 0.14 1.06 1.21 0.68 0.80 0.85 0.75 3.60
+LSTM+Bayes 64 80 1.09 1.02 1.25 0.69 0.59 0.75 0.62 3.47
+LSTM+VAE 64 80 0.83 2.10 1.38 0.61 0.93 0.78 0.62 6.92
+The revised results, summarized in Table A4, indicate that our main conclusions remain un-
+changed. The Transformer+Gibbs configuration continues to deliver the most balanced perfor-
+mance,whileLSTM-basedmodels,evenatincreaseddepth,consistentlylagbehind. Acrossarchi-
+tectures,Transformer-basedmodelsgenerallyoutperformtheirLSTMcounterparts,withsystem-
+atic advantages in fidelity, diversity, and memorization. The superiority of Transformers is par-
+ticularly evidentin Gibbs-based configurations, where they achievelower joint errorsand higher
+memorization, suggesting a more faithful approximation of the underlying data-generating pro-
+cess. EvenwithinWGAN-,Bayes-,andVAE-basedsettings,Transformerstendtodelivercompara-
+ble or superior recall and precision, demonstrating greater robustness across different generative
+paradigms.
+Since Table A4 (corresponding to Table 7 in the revised manuscript) was revised to reflect
+theupdatedexperiments,thecorrespondingdiscussioninthemanuscripthasalsobeenupdated
+accordingly. ThemodifiedtextappearsonPage26oftherevisedmanuscriptasfollows:
+"
+AsshowninTable7,thefourgenerativemethodsexhibitdistinctbehaviorsacrossfidelity,diversity,and
+memorization. Intermsoffidelity,Gibbs-basedmodelsemergeasthemostbalanced,combiningrelativelylow
+jointerrorswithconsistentlyhigherprecision,indicatingthattheycapturebothmarginalcharacteristicsand
+inter-variabledependenciesmoreeffectivelythanalternativeapproaches. WGANmodelsdemonstratestrong
+performanceonsingle-variablefidelitybutencounterdifficultieswhenmodelinghigher-orderrelationships,
+resultingindiminishedoverallprecisionandatendencytowardpartialmodecollapse. Bayes-basedmodels
+achievemoderatelevelsofprecisionyetfallshortincapturingbothmarginalandjointstructures,reflecting
+theirconservativegenerativenature. VAE-basedmodelsperformleasteffectively,withmarkedchallengesin
+representingmultivariatedependenciesandconsequentlythelowestprecisionamongthemethodsconsidered.
+With respect to diversity, Gibbs-based approaches again provide the most favorable balance, achieving
+high recall together with stable coverage, thereby reflecting both comprehensive exploration of the support
+of the real distribution and concentration around realistic samples. WGAN variants emphasize coverage,
+generating samples that remain close to the true distribution but at the expense of recall, consistent with
+incomplete representation of less frequent or peripheral patterns. VAE models display the inverse pattern:
+their samples exhibit broader dispersion, which leads to high recall but comparatively weaker coverage and
+fidelity,indicativeofdiffuseandlessaccuratereconstructions. Bayes-basedmethodsremainthemostrestric-
+18
+
+tive, with consistently lower recall, underscoring their tendency to generate a narrower set of patterns. In
+termsofmemorization,Gibbsmodelsdemonstratethestrongestalignmentwithtrainingdatadistributions,
+followedbyWGAN,whereasBayesandVAEvariantsconsistentlylagbehind.
+Across architectures, Transformer-based models generally outperform their LSTM counterparts, with
+systematic advantages in fidelity, diversity, and memorization. The superiority of Transformers is particu-
+larlyevidentinGibbs-basedconfigurations,wheretheyachievelowerjointerrorsandhighermemorization,
+suggestingamorefaithfulapproximationoftheunderlyingdata-generatingprocess. EvenwithinWGAN-,
+Bayes-, and VAE-based settings, Transformers tend to deliver comparable or superior recall and precision,
+"
+demonstratinggreaterrobustnessacrossdifferentgenerativeparadigms.
+19
+
+Response To Reviewer #2
+This paper proposes a novel generative framework combining a decoder-only Transformer,
+Gibbssampling,andGaussianMixtureModelstosynthesizejointelectricvehicle(EV)driv-
+ing and charging event data. The model is trained on 15 months of real-world EV data from
+Shanghaiandincorporatesdynamicspatiotemporalfeaturesanduserheterogeneity. Overall,
+itisagoodwork. Ihavesomeconcernsaswellassuggestionsforauthorsconsideration.
+Wesincerelythankthereviewerfortheconstructivecommentsandvaluablesuggestions. Wehave
+carefully addressed all concerns, and our detailed responses are provided below point by point.
+ReviewerComment2.1
+ThepaperdoesnotrigorouslyevaluatethetractabilityandconvergencebehavioroftheGibbs
+samplerinthehigh-dimensional,mixed-typefeaturespace. Asthenumberoffeaturesgrows,
+samplingcanbecomecomputationallyexpensiveandpronetoslowmixing,particularlyinthe
+presenceofstronginter-featuredependenciesormultimodalconditionals. Theassumptionof
+conditionaltractabilitymaybreakdown,affectingsamplefidelity. Theauthorsmustinclude
+convergence diagnostics and analyze the impact of feature update ordering and the number
+ofGibbsiterationsongenerationquality.
+Response
+Wesincerelythankthereviewerforpointingouttheimportanceofrigorouslyevaluatingthetractabil-
+ity and convergence behavior of the Gibbs sampler in the high-dimensional, mixed-type feature
+space. WeagreethatGibbssamplingmaybecomecomputationallyexpensiveandpotentiallysuf-
+fer from slow mixing in the presence of strong inter-feature dependencies or multimodal condi-
+tionals.
+Infact,wehavecarefullyconsideredboththeefficiencyandthesamplingqualityoftheGibbs
+procedureduringourmodeldevelopment. Ourempiricalfindingsshowthatasimplesequential-
+updateGibbsschemeisalreadyhighlyeffective: convergenceistypicallyreachedwithinabout15
+iterations, and improvements from more sophisticated sampling strategies were found to be lim-
+ited. Tofurtheraddressthereviewer’sconcern,weconductedasystematicconvergencediagnostic
+experimentasfollows:
+• WefirsttrainedafixedgenerativemodelandthenperformedGibbssamplingwithrandom
+featureupdateordering.
+• For each Gibbs iteration, we computed the posterior log-likelihood, i.e., the sum of log-
+probabilitiesofallfeaturesundertheirrespectiveconditionalmodels.
+20
+
+• Werepeatedtheprocedureover100runs,eachwithabatchsizeof1024samplesandatem-
+poral length of 60 time steps, and reported both the mean and standard deviation of the
+log-likelihoodacrossruns.
+The results (Figure A4) show that the posterior log-likelihood converges rapidly within 15
+steps, with variance across different update orders remaining negligible. Since our generative
+space involves only about seven key features, two full sweeps (about 14 iterations) are sufficient
+forpracticalconvergence. Evenifthefeaturedimensionalityweretoincrease(e.g.,upto 100fea-
+tures),theprocedureremainsscalable,asbatch-basedimplementationscanefficientlyparallelize
+thousandsofsamples,providedmemoryorGPUcapacityissufficient.
+    
+   
+   
+   
+   
+   
+   
+   
+    
+                              
+ * L E E V  6 D P S O L Q J  6 W H S
+ G R R K L O H N L /  J R /
+ 6 W H S V    
+ 0 H D Q  / R J  / L N H O L K R R G
+     6 W D Q G D U G  ' H Y L D W L R Q V
+FigureA4: ConvergencebehavioroftheGibbssampler
+Finally, we note that in our application domain, real-time generation is not required; instead,
+generationfidelityandstabilityareprioritizedoverrawsamplingspeed. Nevertheless,computa-
+tional efficiency remains an important aspect, and in future work we plan to explore accelerated
+samplingstrategiestofurtherreduceruntimewithoutsacrificingsamplefidelity.
+To enhance the completeness of the discussion, we explicitly analyze the convergence speed
+ofGibbssamplinganditsimplicationsforscalability. ThecorrespondingsectionappearsonPage
+32 of the revised manuscript, Section 4.5, and Figure 8 of the revised manuscript corresponds to
+FigureA4inthisletter. Therevisedtextisreproducedbelowforclarity:
+"
+WefurtherinvestigatetheconvergencebehavioroftheproposedGibbssamplingprocedure. Specifically,
+wetrainedafixedTransformer+Gibbsmodel(64layers,d =64)andgeneratedsamplesover100batches
+model
+(batch size = 1024, time steps = 60). At each Gibbs iteration, we computed the posterior log-likelihood
+by summing the conditional log-probabilities across all features. As shown in Figure 13, the posterior log-
+likelihood converges rapidly within approximately 15 iterations, with negligible variance across different
+21
+
+featureupdateorders. TheseresultsindicatethatGibbssamplingreachesstableconvergencewithrelatively
+fewupdates,andthatupdateorderingisnotacriticalfactorforourtask. Sinceourgenerativespacecurrently
+involves only seven key features, two complete sweeps (≈ 14 iterations) are sufficient in practice. Looking
+ahead,whenthefeaturedimensionalitygrows,moreefficientvariantssuchasblockGibbsupdatesorparallel
+"
+temperingcouldbeemployedtofurtherimprovemixingspeedandscalability.
+ReviewerComment2.2
+The model encodes logical constraints via penalty terms, but it remains unclear how often
+generated samples violate domain-specific physical constraints (e.g., negative SoC, charging
+distance>0). Anevaluationofconstraintsatisfactionratesinthesyntheticdataisnecessary
+tovalidatethereliabilityofthegenerationunderreal-worldfeasibility.
+Response
+We thank the reviewer for this valuable suggestion. To explicitly assess constraint satisfaction,
+we evaluated the generated data against domain-specific physical rules (e.g., SoC within [0,1],
+monotonic SoC dynamics during driving/charging, and zero distance during charging)As noted
+inSection2.2oftheoriginalmanuscript(Page16,lastparagraph),wefurtherappliedaresampling
+procedure during generation to enforce physical consistency at the event level. With this mecha-
+nisminplace,constraintsatisfactionexceeds99.95%acrossapproximately7millionsyntheticsam-
+ples. Theremainingviolations(< 0.05%)stemmainlyfromminornumericalimprecisionduring
+theresamplingstep. Overall,theframeworkthusensuresstrongphysicalfidelity,withonlynegli-
+gibledeviationsobserved. Toreportthisresultclearly,wehaveaddedanexplicitstatementinthe
+revisedmanuscriptonPage25(Section4.2). Theaddedsentencereadsasfollows:
+“Acrossallgenerativeexperiments,constraintsatisfactionexceeds99.95%. Therareviolations(< 0.05%),
+whichstemfromnumericalimprecisionintheresamplingstep.”
+ReviewerComment2.3
+The proposed framework relies on extensive high-resolution longitudinal data for effective
+training, raising concerns about scalability in data-scarce or cold-start environments. A sen-
+sitivityanalysisoninputdatavolume(e.g. reducedsamplesize)andspatialcoveragewould
+enhanceunderstandingofthemodel’sgeneralizationpotential.
+Response
+We appreciate the reviewer’s suggestion and have accordingly conducted additional sensitivity
+analyses to evaluate the model’s robustness under reduced data availability. Specifically, we re-
+ducedtheinputdatavolumeintwodifferentways:
+22
+
+1. Training set size: we obtained proportionally reduced datasets by randomly sampling the
+samepercentageofvehicleowners(5%,10%,20%,30%,and50%).
+2. Spatial coverage: because random 5% subsamples already cover nearly 100% of spatial lo-
+cations (as individual vehicles typically traverse multiple regions), it is infeasible to limit
+spatial extent simply by random sampling. Instead, we adopted a search-based procedure:
+starting with users whose one-year travel footprint covered the fewest spatial locations, we
+graduallyaddedotheruserssothatthemarginalincreaseinspatialcoveragewasminimized.
+Wethenreportedresultsatspatialcoveragethresholdsof20%,40%,60%,and80%. Itshould
+benoted, however, thatalthoughthecoveragepercentagesappearlarge, thecorresponding
+samplesizesremainedbelow4%oftheoriginaldataset.
+TableA5: Sensitivityanalysisunderdifferenttrainingsetsizesandspatialcoverage
+Factor Fraction Fidelity Diversity Memorization
+ρ ρ Joint-KL Precision Recall Coverage ρ
+1 2 3
+5% 0.40 0.62 1.10 0.62 0.86 0.88 0.73
+10% 0.35 0.56 1.04 0.65 0.88 0.86 0.79
+20% 0.26 0.58 1.01 0.85 0.94 0.89 0.82
+Trainingsetsize
+30% 0.21 0.53 0.98 0.74 0.96 0.85 0.84
+50% 0.21 0.51 0.99 0.75 0.96 0.82 0.84
+100% 0.17 0.49 0.91 0.78 0.97 0.84 0.88
+20% 0.48 0.78 1.28 0.59 0.88 0.89 0.68
+40% 0.45 0.75 1.21 0.61 0.89 0.85 0.67
+Spatialcoverage
+60% 0.45 0.74 1.21 0.61 0.85 0.85 0.68
+80% 0.44 0.74 1.20 0.60 0.87 0.84 0.68
+Table A5 presents the sensitivity analysis under different data-scarcity conditions. For the
+Trainingsetsizedimension,theresultsshowthatevenwithlimiteddatatheframeworkcancap-
+turebasicpatterns, althoughtheoverallfidelityremainslow. Astheproportionoftrainingusers
+increases, performance improves steadily across all metrics (ρ , ρ , Precision, Recall, and Cover-
+1 2
+age), and the results become progressively more stable. Notably, when using 30%–50% of the
+dataset,themodelalreadyachievesperformanceclosetothefull-samplecase,suggestingthatre-
+liableoutcomescanbeobtainedwithoutrequiringtheentiredataset.
+In contrast, the spatial coverage experiments show less encouraging results. This is because,
+even though the spatial coverage ratios range from 20% to 80%, the corresponding sample sizes
+remain extremely small (all below 4%, with the minimum below 1%), which limits the overall
+learningcapacityofthemodel. Nevertheless,sincethesesubsetsaremorespatiallyconcentrated,
+thegeneratedsamplescanstillcapturearelativelyhighproportionofthecoveredregions,leading
+torecallandcoveragevaluesthatremainatcomparativelyhighlevelsdespitethelimitedtraining
+size.
+Since the experiments based on spatial coverage do not provide substantial insights due to
+the extremely small effective sample sizes (all below 4%), we only incorporated the sample size
+23
+
+sensitivity analysis into the revised manuscript. The updated text is included on Page 34 of the
+revisedversion,withthecorrespondingresultsshowninTableA5inthisletter,whichcorresponds
+to Table 10 of the revised manuscript. For the reviewer’s convenience, the newly added text is
+reproducedbelow:
+"
+Tofurtherexaminetherobustnessofourframework, weconductasensitivityanalysisbyvaryingthe
+proportion of vehicle owners included in the training dataset. Specifically, we randomly sampled the same
+proportionofusers(5%,10%,20%,30%,and50%)toconstructreduceddatasetsandcomparedtheresults
+withthefull-samplecase. TheevaluationmetricsarereportedinTable10.
+Theresultsindicatethatmodelperformanceimprovessubstantiallyasthesamplesizeincreases. Inpar-
+ticular,precision,recall,andcoverageshowsteadygainsfrom5%to20%,andtheoutcomeswith30%and
+50%ofusersalreadyapproximatetheresultsobtainedwiththefulldataset. Theseresultsindicatethateven
+with very limited data, our framework can still capture certain usage patterns, although the precision re-
+mainsrelativelylow. Nevertheless,coverageandrecallarereasonablymaintained,reflectingthatthemodel
+can still reproduce the diversity of behaviors. As the training set size increases, the learned patterns be-
+comemoreaccurate: precisionimprovessubstantially,whilecoverageandrecallalsocontinuetoincrease. At
+around30%–50%ofthedataset,themodelachievesafavorablebalanceacrossprecision,recall,andcoverage,
+"
+yieldingperformanceclosetothefull-samplecase.
+24
+
+ReviewerComment2.4
+Whilethepaperevaluatesjointdistributionsviaderivedvariables(e.g.,speed,chargingpower),
+thevisualizations(e.g.,Figure7)showcleardeviationsinsomesubgroups. Thesedifferences
+need to be quantified systematically using additional multivariate similarity measures (e.g.,
+KL-divergence over multidimensional feature space) beyond aggregated metrics, especially
+toevaluateconditionaldependencies.
+Response
+Wethankthereviewerforthisinsightfulsuggestion. First,letusclarifythatouroriginalρ metric
+2
+aggregates multiple variables (e.g., duration, distance, SoC) into derived indicators (e.g., speed,
+chargingpower)andthenevaluatesthealignmentoftheirempiricaldistributionsacrosscategories
+usingWassersteindistance. Thisprocedureeffectivelytransformsamultivariatejointdistribution
+problem into comparisons over one-dimensional derived marginals, which provides interpretive
+value. Nevertheless, the reviewer’s concern is well taken: how to directly evaluate mixed-type
+joint distributions (involving both discrete and continuous variables) is indeed a challenging in
+theliterature.
+Toaddressthis,wehaveincorporatedthek-nearestneighbors(kNN)basedKL-divergencees-
+timator,whichhasbeenwidelyadoptedfortabulardatawithmixeddiscrete–continuousfeatures
+(see, e.g., Ross, 2014; Gao et al., 2017; Zhao & Lai, 2020). Compared to kernel density estimation
+(KDE)–basedapproaches(Moonetal.,2017)andkernelmeanembeddingmethodssuchasmaxi-
+mummeandiscrepancy(MMD)(Grettonetal.,2012),thekNNestimatoriscomputationallymore
+scalableand,inourexperiments,wasfeasibleforlarge-scaledatasets.
+ThekeyideaistodecomposethejointdistributionP(X ,X )ofdiscretevariablesX andcon-
+d c d
+tinuousvariablesX intoconditionalcomponents:
+c
+D (P∥Q) = (cid:88) P(x )D (cid:0) P(X | X = x )∥Q(X | X = x ) (cid:1) +D (P(X )∥Q(X )), (A3)
+KL d KL c d d c d d KL d d
+x
+d
+whereP denotestheempiricaldistributionoftherealdatasetandQdenotesthatofthesynthetic
+dataset. Here,thefirsttermevaluatestheconditionalcontinuousdistributionsgiveneachdiscrete
+configuration,andthesecondtermcomparesthediscretemarginals.
+Forthediscretepart,weapplyDirichlet-smoothedfrequencyestimates(see,e.g.,Bishop,2006;
+Murphy,2012):
+n +α
+P(x ) = x d , (A4)
+d
+N +αK
+wheren isthecountofsubgroupx ,K thenumberofsubgroups,andαthesmoothingparam-
+x d d
+eter.
+Fortheconditionalcontinuouspart,weestimateD (cid:0) P(X | x )∥Q(X | x ) (cid:1)withineachsub-
+KL c d c d
+group x using the k-nearest neighbor (kNN) estimator proposed by Wang et al. (2009), which
+d
+hassincebeenwidelyadoptedforestimatingKLdivergencebetweenmultivariatecontinuousdis-
+tributions(see,e.g.,Singhetal.,2016;Noshadetal.,2017;Ryuetal.,2022;Czyżetal.,2023).
+n
+D(cid:98)KL (P∥Q) = d· 1 (cid:88) log ν i +log m , (A5)
+n ψ n−1
+i
+i=1
+25
+
+where d is the dimension of X , n is the number of samples drawn from P, m is the number of
+c
+samplesdrawnfromQ,ψ isthedistancefromsamplex toitsk-thnearestneighborinP,andν
+i i i
+isthecorrespondingdistanceinQ.
+Inresponsetothereviewer’scomments,wehaveincorporatedthelatestevaluationmetricsinto
+the revised manuscript. Specifically, the updates have been made in Table 6 (Page 25, updated),
+Table7(Page26,updated),Table9(Page34,updated),andTable11(Page36,updated). Forthe
+reviewer’sconvenience,theupdatedTable7(Comparisonofresultsfordifferentgenerativemodel
+configurations)isreproducedbelow(TableA6).
+TableA6: Comparisonofresultsfordifferentgenerativemodelconfigurations
+Model Layer dmodel Fidelity Diversity Memorization Param.Size(M)
+ρ1 ρ2 Joint-KL Precision Recall Coverage ρ3
+Transformer+Gibbs 64 64 0.17 0.49 0.92 0.78 0.97 0.84 0.88 3.55
+Transformer+WGAN 64 64 0.12 1.04 1.18 0.67 0.83 0.89 0.76 3.49
+Transformer+Bayes 64 64 0.92 0.97 1.21 0.71 0.65 0.78 0.67 3.37
+Transformer+VAE 64 64 0.81 2.06 1.35 0.63 0.95 0.79 0.70 6.74
+LSTM+Gibbs 64 80 0.20 0.57 0.97 0.73 0.92 0.82 0.80 3.67
+LSTM+WGAN 64 80 0.14 1.06 1.21 0.68 0.80 0.85 0.75 3.60
+LSTM+Bayes 64 80 1.09 1.02 1.25 0.69 0.59 0.75 0.62 3.47
+LSTM+VAE 64 80 0.83 2.10 1.38 0.61 0.93 0.78 0.62 6.92
+The corresponding discussion has also been revised, as reproduced below, and can be found
+onPage26oftherevisedmanuscript:
+"
+AsshowninTable7,thefourgenerativemethodsexhibitdistinctbehaviorsacrossfidelity,diversity,and
+memorization. Intermsoffidelity,Gibbs-basedmodelsemergeasthemostbalanced,combiningrelativelylow
+jointerrorswithconsistentlyhigherprecision,indicatingthattheycapturebothmarginalcharacteristicsand
+inter-variabledependenciesmoreeffectivelythanalternativeapproaches. WGANmodelsdemonstratestrong
+performanceonsingle-variablefidelitybutencounterdifficultieswhenmodelinghigher-orderrelationships,
+resultingindiminishedoverallprecisionandatendencytowardpartialmodecollapse. Bayes-basedmodels
+achievemoderatelevelsofprecisionyetfallshortincapturingbothmarginalandjointstructures,reflecting
+theirconservativegenerativenature. VAE-basedmodelsperformleasteffectively,withmarkedchallengesin
+representingmultivariatedependenciesandconsequentlythelowestprecisionamongthemethodsconsidered.
+With respect to diversity, Gibbs-based approaches again provide the most favorable balance, achieving
+high recall together with stable coverage, thereby reflecting both comprehensive exploration of the support
+of the real distribution and concentration around realistic samples. WGAN variants emphasize coverage,
+generating samples that remain close to the true distribution but at the expense of recall, consistent with
+incomplete representation of less frequent or peripheral patterns. VAE models display the inverse pattern:
+their samples exhibit broader dispersion, which leads to high recall but comparatively weaker coverage and
+fidelity,indicativeofdiffuseandlessaccuratereconstructions. Bayes-basedmethodsremainthemostrestric-
+tive, with consistently lower recall, underscoring their tendency to generate a narrower set of patterns. In
+termsofmemorization,Gibbsmodelsdemonstratethestrongestalignmentwithtrainingdatadistributions,
+followedbyWGAN,whereasBayesandVAEvariantsconsistentlylagbehind.
+Across architectures, Transformer-based models generally outperform their LSTM counterparts, with
+systematic advantages in fidelity, diversity, and memorization. The superiority of Transformers is particu-
+26
+
+larlyevidentinGibbs-basedconfigurations,wheretheyachievelowerjointerrorsandhighermemorization,
+suggestingamorefaithfulapproximationoftheunderlyingdata-generatingprocess. EvenwithinWGAN-,
+Bayes-, and VAE-based settings, Transformers tend to deliver comparable or superior recall and precision,
+"
+demonstratinggreaterrobustnessacrossdifferentgenerativeparadigms.
+Inaddition,wehavethoroughlyrevisedtheEvaluationMetricssectionofthemanuscript(see
+Page 19 in the revised manuscript) in light of the reviewer’s suggestions and recent literature.
+The entire section has been updated to provide a more comprehensive framework encompass-
+ing fidelity, diversity, and memorization. Notably, this revision already incorporates the updates
+requestedinthefollowingcomment,sothatallrelatedclarificationsareconsolidatedhereforcon-
+sistency. Forthereviewer’sconvenience,theupdatedtextisreproducedbelow:
+3. EvaluationMetrics
+To measure the performance of the model, we organize our evaluation framework into three categories: (i)
+fidelity,(ii)diversity,and(iii)memorization.
+3.1Fidelity
+Fidelity reflects how closely the generated data resemble the ground truth. We first evaluate fidelity using
+univariateandmultivariatedistributionaldistances. Thefirstmetricisdefinedbyρ asfollows:
+1
+(cid:88) (cid:88)
+ρ = D (P (x )∥Q(x ))+ W (u ,v ), (19)
+1 js i i j j
+i∈A j∈B
+whereAisthesetofdiscretevariablesandBisthesetofcontinuousvariables. Fordiscretevariables,weuse
+Jensen-ShannonDivergence(Lin,2002),i.e.,D (·),tomeasurethedistributionofsamplesP(x )andthe
+js i
+ground truth distribution Q(x ). For continuous variables, we use the Wasserstein distance (Arjovsky et
+i
+al., 2017), i.e., W(·), to measure the distribution of variables. The distribution of the Wasserstein distance
+isasfollows:
+(cid:90) +∞
+W(u,v) = |U(x)−V(x)|dx, (20)
+−∞
+whereU(x)andV(x)aretheestimatedCDFsoftherespectivedistributionsuandv. Themetricρ computes
+1
+themeanperformanceoftheunivariatedistributions,andthencontraststhisaverageacrossvariousmodels.
+For the multivariate distribution, we consider the following variables in Table 4. These variables are
+derivedfrommultiplefactors;forinstance,drivingspeediscalculatedbydividingthetraveldistancebythe
+driving duration, and charging power is determined by the difference between the end SoC and start SoC
+divided by the charging duration. For discrete variables such as user label, geographic index, and battery
+capacity,wefirstgroupthedata,andthencomparethecontinuousvariablesacrossthesegroups. Thisanalysis
+includes,forinstance,thespatiotemporaldistributionsofvehiclespeed,chargingpower,anddrivingevents.
+Thisapproachallowsustotransformtheassessmentofmultivariatedistributionsintomeaningfuluni-
+variatedistributions. Accordingly,ρ canbedefinedasfollows:
+2
+(cid:88) (cid:88)
+ρ = D (P(x ) ∥ Q(x ))+ W(u ,v ), (21)
+2 js i i j j
+i∈C j∈D
+27
+
+whereC isthesetofderivedcontinuousvariablesandD isthesetofderiveddiscretevariables.
+Tofurtherstrengthentheanalysisofmixed-typejointdistributions,wehaveincorporatedthek-nearest
+neighbors(kNN)basedKL-divergenceestimator,whichhasbeenwidelyadoptedfordiscrete–continuousdata
+(Ross, 2014; Gao et al., 2017; Zhao and Lai, 2020). Compared to kernel density estimation (KDE)–based
+approaches(Moonetal., 2017)andkernelmeanembeddingmethodssuchasmaximummeandiscrepancy
+(MMD)(Grettonetal.,2012),thekNNestimatoriscomputationallymorescalableand,inourexperiments,
+feasibleforlarge-scaledatasets.
+The key idea is to decompose the joint distribution P(X ,X ) of discrete variables X and continuous
+d c d
+variablesX intoconditionalcomponents:
+c
+D (P∥Q) = (cid:88) P(x )D (cid:0) P(X | X = x )∥Q(X | X = x ) (cid:1) +D (P(X )∥Q(X )),] (22)
+KL d KL c d d c d d KL d d
+x
+d
+where P denotes the empirical distribution of the real dataset and Q denotes that of the synthetic dataset.
+Thefirsttermevaluatestheconditionalcontinuousdistributionsgiveneachdiscreteconfiguration, andthe
+secondcomparesthediscretemarginals.
+For the discrete part, we apply Dirichlet-smoothed frequency estimates (Bishop and Nasrabadi, 2006;
+Murphy,2013):
+n +α
+P(x ) = x d , (23)
+d
+N +αK
+all s
+where n is the count of subgroup x , N is the total number of samples, K the number of subgroups,
+x d d all s
+andαthesmoothingparameter.
+(cid:0) (cid:1)
+Fortheconditionalcontinuouspart,weestimateD P(X | x )∥Q(X | x ) withineachsubgroup
+KL c d c d
+x using the kNN estimator proposed by Wang et al. (2009), which has since been widely adopted for
+d
+multivariate distributions (Singh and Poczos, 2016; Noshad et al., 2017; Ryu et al., 2022; Czy˙z et al.,
+2023):
+D(cid:98)KL (P∥Q) = d
+c
+· 1 (cid:88)
+Nr
+log ν i +log N g , (24)
+N ψ N −1
+r i r
+i=1
+whered isthedimensionofX , N isthenumberofsamplesdrawnfromP, N isthenumberofsamples
+c c g r
+drawn from Q, ψ is the distance from x to its k-th nearest neighbor in P, and ν is the corresponding
+i i i
+distanceinQ.
+Inaddition,followingpriorworkonprecision–recallbasedevaluationforgenerativemodels(Kynkaan-
+niemietal.,2019;Naeemetal.,2020;CheemaandUrner,2023),wealsoincorporatethekNNbasedprecision
+metricasacomplementaryfidelitymeasure. Precisionquantifiestheproportionofgeneratedsamplesthatlie
+withinthesupportoftherealdatadistribution. Formally,
+1 (cid:88)
+Ng
+Precision = 1(∃r ∈ R : d(g ,r ) ≤ d (r )), (25)
+j i j k j
+N
+g
+i=1
+whereG = {g } Ng denotesthesetofgeneratedsamples,R = {r }Nr isthesetofrealsamples,andd (r )
+i i=1 j j=1 k j
+isthedistancefromr toitsk-thnearestneighborinR. Thedistanced(g ,r )betweenageneratedsample
+j i j
+g andarealsampler isdefinedformixedcontinuous–discretefeaturesas
+i j
+(cid:115)
+d(g ,r ) = (cid:88)(cid:0) g −r (cid:1)2 + (cid:88) 1 (cid:0) g ̸= r (cid:1) , (26)
+i j i,a j,a i,b j,b
+a∈A b∈B
+28
+
+where A denotes the set of continuous features and B the set of discrete features. For discrete attributes,
+similarity is assessed using the indicator function 1(g ̸= r ), which equals 1 if the two samples differ
+i,b j,b
+ondiscretefeaturesand0otherwise. Takentogether,thismixed-typedistanceenablestheprecisionmetricto
+complement ρ , ρ , and the kNN–KL divergence by providing a direct notion of fidelity grounded in local
+1 2
+neighborhoodsupport.
+3.2Diversity
+Diversity captures the extent to which the generated data cover the support of the real data distribution,
+therebyreflectingthemodel’sabilitytoreproducethefullvarietyofreal-worldpatternsratherthanconcen-
+tratingononlythemostcommonones. Toquantifydiversity,weincorporatetwocomplementarykNNbased
+measures: recallandcoverage.
+Recall measures the proportion of real samples that lie within the support of the generated distribution,
+andisthereforecomplementarytoprecision. Formally, followingKynkaanniemietal. (2019), Naeemetal.
+(2020),andCheemaandUrner(2023),recallisdefinedas
+1 (cid:88)
+Nr
+Recall = 1(∃g ∈ G : d(r ,g ) ≤ d (g )), (27)
+i j i k i
+N
+r
+j=1
+whered (g )isthedistancefromg toitsk-thnearestneighborinG. Ahighrecallvalueindicatesthatthe
+k i i
+generateddatacoveralargeportionoftherealdataspace,includinglessfrequentpatterns.
+While recall counts whether each real sample is supported by any generated sample, coverage measures
+how many distinct real samples are captured within the k-nearest-neighbor balls of generated samples. In
+otherwords,coverageemphasizeswhetherthegeneratorisabletorepresentdifferentmodesoftherealdistri-
+bution. Formally,coverageisdefinedas:
+1 (cid:88)
+Nr
+Coverage = 1(∃g ∈ G : d(g ,r ) ≤ d (r )), (28)
+i i j k j
+N
+r
+j=1
+where d (r ) is the distance from r to its k-th nearest neighbor in R. This metric highlights whether the
+k j j
+generatorreproducesthediversityofmodespresentintherealdataset.
+3.3Memorization
+The third aspect evaluates whether the generative model memorizes the training data instead of learning
+generalizable patterns. The key idea, which has been widely adopted in the literature (van den Burg and
+Williams, 2021; Fang et al., 2024; Shi et al., 2025), is to use the closest distance ratio between training,
+validation, and generated samples to assess whether the model has leaked training data. Following (van
+den Burg and Williams, 2021), we partition the dataset into a training set R , a validation set R , and a
+t v
+generatedsetG.
+For each training sample r ∈ R , we compute its nearest-neighbor distance to both the validation set
+t t
+andthegeneratedset. Thememorizationscoreρ isdefinedas
+3
+ρ = 1 (cid:88) min rv∈Rv d(r t ,r v ) , (29)
+3
+|R | min d(r ,g)
+t g∈G t
+rt∈Rt
+29
+
+whered(·,·)denotesthesamemixed-typedistancedefinedinEq. 28. Intuitively,ifgeneratedsamplessetG
+areunnaturallyclosetothetrainingsamplesR comparedtothevalidationsamplesR ,theratioρ willex-
+t v 3
+ceed1,indicatingpotentialmemorization. Conversely,ifρ < 1,thegenerateddataarefartherfromR than
+3 t
+fromR ,suggestingunderfitting. Anidealmodelachievesρ ≈ 1,whichindicatesabalancebetweenmem-
+v 3
+orizationandgeneralization. Togetherwithothermetrics,thismeasurecompletesourevaluationframework
+forgenerativemodels.
+Referencelist:
+• Bishop,C.M.,&Nasrabadi,N.M.(2006). Patternrecognitionandmachinelearning(Vol. 4,
+No. 4,p. 738). NewYork: springer.
+• Czyż, P., Grabowski, F., Vogt, J., Beerenwinkel, N., & Marx, A. (2023). Beyond normal: On
+theevaluationofmutualinformationestimators. Advancesinneuralinformationprocessing
+systems,36,16957-16990.
+• Gao, W., Kannan, S., Oh, S., & Viswanath, P. (2017). Estimating mutual information for
+discrete-continuousmixtures. Advancesinneuralinformationprocessingsystems,30.
+• Murphy,K.P.(2012). Machinelearning: aprobabilisticperspective. MITpress.
+• Gretton, A., Borgwardt, K. M., Rasch, M. J., Schölkopf, B., & Smola, A. (2012). A kernel
+two-sampletest. Thejournalofmachinelearningresearch,13(1),723-773.
+• Moon, K. R., Sricharan, K., & Hero, A. O. (2017, June). Ensemble estimation of mutual in-
+formation. In2017IEEEInternationalSymposiumonInformationTheory(ISIT)(pp. 3030-
+3034). IEEE.
+• Noshad,M.,Moon,K.R.,Sekeh,S.Y.,&Hero,A.O.(2017). Directestimationofinformation
+divergence using nearest neighbor ratios. In 2017 IEEE International Symposium on Infor-
+mationTheory(ISIT)(pp. 903-907). IEEE.
+• Ross,B.C.(2014). Mutualinformationbetweendiscreteandcontinuousdatasets. PloSone,
+9(2),e87357.
+• Ryu, J. J., Ganguly, S., Kim, Y. H., Noh, Y. K., & Lee, D. D. (2022). Nearest neighbor den-
+sityfunctionalestimationfrominverseLaplacetransform. IEEETransactionsonInformation
+Theory,68(6),3511-3551.
+• Singh, S., & Póczos, B. (2016). Finite-sample analysis of fixed-k nearest neighbor density
+functionalestimators. Advancesinneuralinformationprocessingsystems,29.
+• Wang, Q., Kulkarni, S. R., & Verdú, S. (2009). Divergence estimation for multidimensional
+densitiesviak-Nearest-Neighbordistances. IEEETransactionsonInformationTheory,55(5),
+2392-2405.
+• Zhao, P., & Lai, L. (2020). Minimax optimal estimation of KL divergence for continuous
+distributions. IEEETransactionsonInformationTheory,66(12),7787-7811.
+30
+
+ReviewerComment2.5
+Although the ρ metric aims to measure memorization, its reliance on nearest-neighbor dis-
+3
+tancescanbesensitivetoscalinganddatasparsity. Authorsshouldadditionallyreportprecision-
+recall or coverage metrics (e.g., train-sample overlap rate, novelty rate) to support claims of
+generalization.
+Response
+We sincerely thank the reviewer for raising this important point. Our original evaluation metric,
+ρ , follows prior literature in using the closest distance ratio to measure the risk of data leakage
+3
+(vandenBurg&Williams,2021;Fangetal.,2024). Asthereviewercorrectlypointsout,however,
+additional metrics such as precision, recall, and coverage provide complementary perspectives.
+While ρ focuses on memorization, these measures better reflect the balance between sample fi-
+3
+delityanddiversity. Wefullyagreethattheyarereasonableindicatorsofmodelperformance,and
+therefore we have incorporated them into our evaluation framework to strengthen the reliability
+ofourconclusions.
+Wecarefullyreviewedpriorworkonprecision–recallbasedmetrics. Earlyapproachesdefined
+the neighborhood radius using a fixed threshold ϵ (Sajjadi et al., 2018), which can be sensitive
+to scaling and density variations. More recent work has demonstrated that k-nearest-neighbor
+(kNN) based definitions are more robust and adaptive to local data density (Cheema & Urner,
+2023; Kynkäänniemietal., 2019; Naeemetal., 2020). Inparticular, Naeemetal. (2020)proposed
+reliablefidelityanddiversitymetricsforgenerativemodels,whichweadoptinthisstudy. Specif-
+ically,wedefinethefollowingkNN-basedmetrics:
+1. Precision(fidelity): measurestheproportionofgeneratedsamplesthatliewithinthesup-
+portoftherealdatadistribution.
+n
+1 (cid:88)
+Precision = 1(∃r ∈ R : d(g ,r ) ≤ d (r )), (A6)
+j i j k j
+n
+i=1
+whered (r )denotesthedistancefromr toitsk-thnearestneighborintherealdatasetR.
+k j j
+2. Recall (diversity): quantifies the proportion of real samples that are covered by the gener-
+ateddistribution.
+m
+1 (cid:88)
+Recall = 1(∃g ∈ G : d(r ,g ) ≤ d (g )), (A7)
+i j i k i
+m
+j=1
+whered (g )isthedistancefromg toitsk-thnearestneighborinthegenerateddatasetG.
+k i i
+3. Coverage (diversity): complements recall by evaluating how well the generated samples
+avoidmodedroppingandcapturethespreadofrealdata.
+m
+1 (cid:88)
+Coverage = 1(∃g ∈ G : d(g ,r ) ≤ d (r )), (A8)
+i i j k j
+m
+j=1
+31
+
+Together,thesemetricscomplementρ byprovidingamorebalancedassessmentoffidelity,diver-
+3
+sity,andgeneralizationingenerativemodels.
+In the same manner as our response to the previous comment, we have updated all experi-
+mental tables and the entire Evaluation Metrics section accordingly (see Page 19 in the revised
+manuscript). To avoid redundancy, we kindly refer the reviewer to our detailed explanation and
+the revised text already provided in the response to Comment 2.4. These updates apply consis-
+tentlyacrossthemanuscript.
+Referencelist:
+• Cheema,F.,&Urner,R.(2023,April). Precisionrecallcover: Amethodforassessinggenera-
+tivemodels. In (pp. 6571–6594).
+InternationalConferenceonArtificialIntelligenceandStatistics
+PMLR.
+• Fang,Z.,Jiang,Z.,Chen,H.,Li,X.,&Li,J.(2024). Understandingandmitigatingmemoriza-
+tionindiffusionmodelsfortabulardata. .
+arXivpreprintarXiv:2412.11044
+• Kynkäänniemi, T., Karras, T., Laine, S., Lehtinen, J., & Aila, T. (2019). Improved precision
+and recall metric for assessing generative models.
+Advances in Neural Information Processing
+,32.
+Systems
+• Naeem, M. F., Oh, S. J., Uh, Y., Choi, Y., & Yoo, J. (2020, November). Reliable fidelity and
+diversity metrics for generative models. In (pp.
+International Conference on Machine Learning
+7176–7185). PMLR.
+• Sajjadi, M. S., Bachem, O., Lucic, M., Bousquet, O., & Gelly, S. (2018). Assessing generative
+modelsviaprecisionandrecall. ,31.
+AdvancesinNeuralInformationProcessingSystems
+• vandenBurg, G., &Williams, C.(2021). Onmemorizationinprobabilisticdeepgenerative
+models. ,34,27916–27928.
+AdvancesinNeuralInformationProcessingSystems
+32

@@ -1,0 +1,388 @@
+\documentclass{NSF}
+\usepackage[linewidth=1pt]{mdframed}
+\linespread{1.1}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{tgpagella}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{amsmath,graphicx,amssymb,float,authblk,color,subcaption,appendix,url,amsbsy}
+\usepackage[inkscapelatex=false]{svg}
+\usepackage{url}
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{array}
+\usepackage{gensymb}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{caption}
+\setcounter{table}{0}
+\usepackage{siunitx}
+\captionsetup[table]{position=top}
+\renewcommand{\theequation}{A\arabic{equation}}
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+\newcommand{\origtext}[2]{}
+\newcommand{\revtext}[2]{\vskip 0.05in\noindent In addition, we have revised the relevant text in #1 in the updated manuscript. The updated text is highlighted in \textcolor{red}{red} in the manuscript and reads as follows:\vskip 0.05in\begin{quote}\textcolor{red}{\textit{``#2''}}\end{quote}}
+\newcommand{\plantext}[1]{\noindent\textcolor{green}{\textit{[Planned additional analysis: #1]}}\vskip 0.05in}
+\newcommand{\limittext}[1]{\noindent We acknowledge this as a limitation of the current study, and we have revised the manuscript accordingly. #1\vskip 0.05in}
+\newcommand{\apatext}[1]{\noindent\textbf{References (APA).} #1\vskip 0.1in}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{\LARGE Response to the Reviewers \par}
+\vspace{1.5cm}
+
+{\large \bfseries Title: Quantifying Travel Sequence Predictability via a Constrained Vector-Quantized Variational Autoencoder \par}
+\vspace{1.5cm}
+
+{\large \bfseries Manuscript Reference Number: \par
+TRC-25-02647}
+\vspace{1.5cm}
+
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1}
+\centering
+\begin{tabular}{lc}
+\multicolumn{2}{c}{\large \bfseries Authors:} \\
+\large Zhi Li\\
+\large Zhibin Chen\\
+\large Minghui Zhong
+\end{tabular}
+\end{table}
+\vspace{1.5cm}
+\large Date: March 25, 2026
+\end{titlepage}
+
+\newpage
+\newpage
+\subsection{Overall Comments}
+\begin{mdframed}
+
+Dear Dr.\ Chen,
+
+\vskip 0.1in
+\noindent Thank you for submitting your manuscript to Transportation Research Part C.
+
+\vskip 0.1in
+\noindent I have completed my evaluation of your manuscript. The reviewers recommend reconsideration of your manuscript following major revision. I invite you to resubmit your manuscript after addressing the comments below. Please resubmit your revised manuscript by Mar 06, 2026.
+
+\vskip 0.1in
+\noindent When revising your manuscript, please consider all issues mentioned in the reviewers' comments carefully: please outline every change made in response to their comments and provide suitable rebuttals for any comments not addressed. Please note that your revised submission may need to be re-reviewed.
+
+\vskip 0.1in
+\noindent To submit your revised manuscript, please log in as an author at \url{https://www.editorialmanager.com/trc/}, and navigate to the ``Submissions Needing Revision'' folder.
+
+\vskip 0.1in
+\noindent Transportation Research Part C values your contribution and I look forward to receiving your revised manuscript.
+
+\vskip 0.1in
+\noindent Kind regards,\\
+Lijun Sun \\
+Area Editor\\
+Transportation Research Part C
+
+\end{mdframed}
+
+\subsection{Messages from Authors}
+\vskip 0.2in
+\noindent Dear Editor and Reviewers,
+
+\vskip 0.1in
+
+\noindent We sincerely thank you for your constructive feedback, which has helped us improve the manuscript. We have carefully revised the paper and summarize the main changes below.
+
+\begin{itemize}
+    \item \textbf{Definitions and exposition:} We clarify the formal meaning of predictability, strengthen the link between entropy and predictability in Section~2.1, and expand the explanation of Figure~1--3, the encoder--decoder pipeline, VQ-VAE (versus vanilla VAE), the codebook, and the role of the quantized latent sequence.
+    \item \textbf{Contribution framing and scope:} We revise the manuscript to position the study more carefully as an information-theoretic and representation-learning framework for predictability estimation under distortion, rather than as a new behavioral theory or a directly policy-ready metric.
+    \item \textbf{Assumptions, preprocessing, and limitations:} We strengthen the discussion of stationarity, discretization choices, preprocessing-induced smoothing, interpretability, and external validity, and we state more explicitly which conclusions are conditional on the current dataset and representation.
+    \item \textbf{Additional empirical requests:} For comments that require substantial new empirical work, such as Markov baselines, non-stationarity tests, preprocessing sensitivity, and codebook-size analysis, we state the current limitation explicitly and provide a concrete experiment plan in the detailed responses below.
+\end{itemize}
+
+\vskip 0.2in
+
+\noindent Below we respond item by item. Each reviewer comment is boxed, followed by our response. Where needed, we indicate the relevant page number(s) in the revised manuscript and reproduce the updated text in \textcolor{red}{\textit{red italics}} for the reviewer’s convenience. For issues requiring substantial additional analysis, we indicate the plan in \textcolor{green}{\textit{green brackets}}. References are provided in APA style at the end of each response where appropriate.
+
+\vskip 0.2in
+\noindent Sincerely, \\
+\noindent Zhibin Chen
+
+\newpage
+\section{Response to Reviewer \#1}
+\subsection*{Overall Comments}
+\begin{mdframed}
+Although the topic of this paper sounds interesting, it is not easy for me to follow and understand this paper. My comments and questions are as follows.
+\end{mdframed}
+\subsection{Response}
+We thank the reviewer for the careful reading. We agree that several methodological passages in the original manuscript were too condensed, especially where formal definitions were introduced before sufficient intuition was provided. We therefore revised the manuscript to improve clarity and readability.
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.1}
+\begin{mdframed}
+What is the exact meaning of ``predictability''? The authors introduced it in section 2.1, but I still can't find its formal definition. In this section, I only see a bunch of definitions of entropies (maybe the authors used them to measure ``predictability''.)
+\end{mdframed}
+\subsection{Response}
+We thank the reviewer for identifying an important presentation problem. The reviewer is correct: in the submitted version, the entropy quantities were introduced first, while the quantity of real interest, namely predictability, was defined only implicitly through the later Fano-based derivation. This can make Section~2.1 look like a list of entropy definitions rather than a formal definition of predictability. To address this concern, we now define predictability at the start of the subsection as the \emph{maximum achievable probability of correctly predicting the next state from the observed history}, and we then explain that the entropy rate is the key intermediate quantity used to compute this upper bound.
+\origtext{Pages 5--6}{According to Fano's inequality ... the maximum achievable predictability $\Pi_{\max}=1-P_e^{\min}$. Thus, the predictability of the travel sequence can be derived using the entropy rate of the sequence and the equation $f_e(1-\Pi_{\max})=H^{\mathrm{rate}}$.}
+\revtext{Section 2.1, currently Pages 5--6}{In this paper, \emph{predictability} refers to the maximum achievable probability of correctly predicting the next travel state from its past history under the optimal predictor. Following Song et al. (2010), this quantity is linked to the entropy rate through Fano's inequality: lower entropy rate implies lower irreducible prediction error and hence higher maximum achievable predictability. The entropy measures introduced below are therefore not alternative definitions of predictability; rather, they are the information-theoretic quantities used to compute it.}
+\apatext{Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of information theory} (2nd ed.). Wiley. Song, C., Qu, Z., Blumm, N., \& Barabasi, A.-L. (2010). Limits of predictability in human mobility. \textit{Science, 327}(5968), 1018--1021.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.2}
+\begin{mdframed}
+I don't understand Figure 1. Do the A and B points have the same locations in the left and right figures? What are differences in these two figures?
+\end{mdframed}
+\subsection{Response}
+We appreciate this comment. Yes, the points A and B represent the \emph{same physical locations} in both panels. What changes between the two panels is not the geography, but the \emph{discretization rule}. The purpose of the figure is to show that even when the spatial resolution is nominally the same, different boundary placements can produce different symbolic sequences and therefore different predictability values. We agree that this was not stated explicitly enough in the original caption and surrounding text.
+\origtext{Page 7}{As illustrated in Figure 1, consider two spatial points A and B. In the left panel, A and B are located near the boundary between two hexagonal regions, Zone 1 and Zone 2 ... In contrast, the right panel shows an alternative discretization scheme with the same hexagonal resolution, where both A and B are assigned to Zone 1.}
+\revtext{Section 2.2, currently Page 7}{In Figure 1, points A and B denote the same two physical locations in both panels. The difference between the two panels lies solely in the discretization boundary. In the left panel, A and B fall into different zones, so switching between them generates an alternating symbolic sequence. In the right panel, the same two locations fall into the same zone, so the resulting symbolic sequence becomes homogeneous. The figure is intended to illustrate that predictability depends not only on spatial resolution but also on the discretization rule itself.}
+\apatext{Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of information theory} (2nd ed.). Wiley. Gallager, R. G. (1968). \textit{Information theory and reliable communication}. Wiley.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.3}
+\begin{mdframed}
+As for Figure 2, the authors should explain in detail what the encoder exactly does. Besides, I would encourage the authors to explain the purposes of the encoder and decoder in the abstract.
+\end{mdframed}
+\subsection{Response}
+We agree. In the submitted manuscript, Figure~2 was mathematically correct but too terse for readers who are not already familiar with representation learning. The encoder should be described in functional terms, not only as a mapping symbol. We therefore explain that the encoder converts a continuous travel sequence block into a discrete latent sequence that is suitable for entropy-rate estimation, while the decoder reconstructs the original continuous signal under the prescribed distortion constraint. We also add this purpose to the abstract so that the architecture does not appear abruptly later in the paper.
+\origtext{Pages 1 and 8}{The encoder is a mapping $\mathcal{F}: \mathcal{X}^n \rightarrow \mathcal{Z}^n$ ... A decoder $\mathcal{G}: \mathcal{Z}^n \rightarrow \hat{\mathcal{X}}^n$ then reconstructs the signal.}
+\revtext{Abstract and Section 2.2.1, currently Pages 1 and 8}{The encoder maps each continuous multi-dimensional travel sequence block into a sequence of discrete latent symbols, thereby translating the original behavioral signal into a representation on which symbolic entropy-based predictability analysis can be performed. The decoder maps these latent symbols back to the continuous signal space and ensures that the learned discrete representation preserves the original behavioral information up to a user-specified distortion level.}
+\apatext{Gallager, R. G. (1968). \textit{Information theory and reliable communication}. Wiley. van den Oord, A., Vinyals, O., \& Kavukcuoglu, K. (2017). Neural discrete representation learning. In \textit{Advances in Neural Information Processing Systems 30}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.4}
+\begin{mdframed}
+The VQ-VAE framework seems out of the blue, at least to me. Why did the author suddenly mention the ``VQ-VAE'' on page 10? Can't we use the vanilla VAE? Please justify it.
+\end{mdframed}
+\subsection{Response}
+We agree that the transition to VQ-VAE was too abrupt in the submitted draft. The reason for choosing VQ-VAE is not simply that it is a strong neural architecture, but that our predictability estimator ultimately operates on a \emph{finite symbolic alphabet}. A vanilla VAE typically learns continuous latent variables, usually under a Gaussian prior, whereas our method requires a discrete latent sequence whose entropy rate can be estimated consistently as a symbolic process. VQ-VAE is therefore a natural choice because it produces discrete codes via vector quantization while still allowing end-to-end training.
+\origtext{Pages 4 and 10}{To address the above challenges, we propose a quantization-based framework that leverages Vector Quantized Variational Autoencoders (VQ-VAE) ... We solve the above optimization problem by combining the augmented Lagrangian method with the VQ-VAE framework.}
+\revtext{End of Introduction and start of Section 2.3, currently Pages 4 and 10}{We adopt VQ-VAE rather than a vanilla VAE because the predictability measure developed in this paper is defined on a discrete symbolic sequence. VQ-VAE produces a learned discrete latent alphabet through nearest-neighbor quantization, which makes entropy-rate estimation in the latent space well aligned with the theoretical formulation. In contrast, a vanilla VAE usually yields continuous latent variables and therefore does not directly provide the symbolic representation required by the predictability-distortion framework.}
+\apatext{Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of information theory} (2nd ed.). Wiley. van den Oord, A., Vinyals, O., \& Kavukcuoglu, K. (2017). Neural discrete representation learning. In \textit{Advances in Neural Information Processing Systems 30}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.5}
+\begin{mdframed}
+The authors also should add more explanations on some technical terms like ``codebook'' in VQ-VAE.
+\end{mdframed}
+\subsection{Response}
+We agree. The submitted manuscript used the term ``codebook'' in formula form before giving a plain-language explanation. We now add a short intuitive definition immediately before the formal equations. Specifically, we explain that the codebook is a finite collection of learnable prototype vectors and that each encoder output is replaced by the nearest prototype, thereby creating a discrete token sequence.
+\origtext{Page 10--11}{The encoder first produces a continuous embedding ... then quantizes it via a shared codebook $\{\mathbf{e}_j\}_{j=1}^K \subset \mathbb{R}^q$.}
+\revtext{Section 2.3, currently Pages 10--11}{Here, the \emph{codebook} is a finite set of learnable prototype vectors. For each time step, the encoder first outputs a continuous embedding, and that embedding is then replaced by its nearest codebook entry. The index of the selected entry becomes the discrete latent symbol, while the selected vector itself is used for reconstruction. In this way, the codebook serves as the learned discrete alphabet of the proposed predictability framework.}
+\apatext{Agustsson, E., Mentzer, F., Tschannen, M., Cavigelli, L., Timofte, R., Benini, L., \& Van Gool, L. (2017). Soft-to-hard vector quantization for end-to-end learning compressible representations. In \textit{Advances in Neural Information Processing Systems 30}. van den Oord, A., Vinyals, O., \& Kavukcuoglu, K. (2017). Neural discrete representation learning. In \textit{Advances in Neural Information Processing Systems 30}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.6}
+\begin{mdframed}
+Based on my understandings, VAE should require some additional sampling or randomness to be injected. Where are them in Figure 3?
+\end{mdframed}
+\subsection{Response}
+We thank the reviewer for raising this point, because the label ``VQ-VAE'' can indeed create the expectation of Gaussian latent sampling, as in a standard VAE. In our case, however, the latent bottleneck is \emph{vector quantized}, not Gaussian. Therefore, there is no reparameterized Gaussian sampling step in Figure~3. Instead, the encoder output is deterministically assigned to the nearest codebook vector, and differentiability is handled through the straight-through estimator and the soft assignment used for the entropy term. We now state this explicitly in the text and in the figure explanation to avoid confusion.
+\origtext{Pages 10--12}{The encoder first produces a continuous embedding ... then quantizes it via a shared codebook ... Figure 3: Network architecture and loss computation pipeline.}
+\revtext{Section 2.3 and Figure 3 caption, currently Pages 10--12}{Unlike a vanilla VAE, the proposed VQ-VAE does not sample a continuous latent variable from a Gaussian posterior. The latent path is discretized through nearest-neighbor vector quantization. During training, gradients are propagated through the quantization step using a straight-through estimator, while a soft assignment is used only to construct a differentiable approximation to the entropy term.}
+\apatext{Agustsson, E., Mentzer, F., Tschannen, M., Cavigelli, L., Timofte, R., Benini, L., \& Van Gool, L. (2017). Soft-to-hard vector quantization for end-to-end learning compressible representations. In \textit{Advances in Neural Information Processing Systems 30}. van den Oord, A., Vinyals, O., \& Kavukcuoglu, K. (2017). Neural discrete representation learning. In \textit{Advances in Neural Information Processing Systems 30}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.7}
+\begin{mdframed}
+I have a major concern about the assumption of ``stationary processes''. All the theories the authors presented are built on stationary stochastic processes. Did the authors really believe the travel pattern in Shanghai is stationary, independent of the season?
+\end{mdframed}
+\subsection{Response}
+We fully understand the reviewer's concern. We do not mean to claim that Shanghai EV travel behavior is literally stationary across seasons or other regime changes. What we intended is narrower: stationarity is used as the standard analytical assumption under which entropy-rate and rate-distortion results can be stated. We agree that this distinction was not made clearly enough in the submitted manuscript, and we now make it explicit so that the theory is not read as an empirical claim of season-invariant behavior.
+\origtext{Pages 5 and 27}{Assume that $\{Z_t\}$ is a stationary process. ... Second, the framework assumes temporal stationarity in behavioral sequences, an assumption that may be violated in real-world settings with structural shifts or regime changes (e.g., seasonal effects or policy interventions).}
+\revtext{Section 2 and Conclusion, currently Pages 5 and 27}{For theorems in Sections 2.1--2.2, stationarity is adopted as a standard analytical assumption to define entropy rate and rate-distortion limits over a fixed observation horizon. This should not be read as a claim that long-horizon EV behavior is strictly time-invariant across all seasons or policy regimes. In empirical settings, the proposed predictability estimate should therefore be interpreted as conditional on the observed period and preprocessing choices.}
+\limittext{At the present stage, we do not claim that the empirical predictability estimates are season-invariant. We will state this limitation more explicitly in the conclusion and avoid over-generalizing the empirical findings beyond the observation window.}
+\plantext{We will add a robustness analysis that recomputes predictability separately for weekday versus weekend periods and for different seasonal segments under the same distortion thresholds, and we will report how much the estimated predictability shifts across periods.}
+\apatext{Hamilton, J. D. (2020). \textit{Time series analysis}. Princeton University Press. Song, C., Qu, Z., Blumm, N., \& Barabasi, A.-L. (2010). Limits of predictability in human mobility. \textit{Science, 327}(5968), 1018--1021. Teixeira, D. d. C., Almeida, J. M., \& Viana, A. C. (2021). On estimating the predictability of human mobility: The role of routine. \textit{EPJ Data Science, 10}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 1.8}
+\begin{mdframed}
+My last question is: what if we do direct discretization over the continuous space $\mathcal{X}$ instead of transforming $\mathcal{X}$ into the discretize $\mathcal{Z}$? Can the na\"{\i}ve discretization beat the author's method if discretization is fine enough?
+\end{mdframed}
+\subsection{Response}
+We agree that the paper should address this point more directly. In principle, a direct discretization of the original continuous space can indeed be competitive, especially when the dimensionality is low and the partition is well tuned. For our setting, however, the signal is multi-dimensional and continuous, so increasingly fine direct discretization quickly creates sparse state spaces, unstable transition estimates, and arbitrary dependence on hand-chosen boundaries. Our motivation for learning a latent discrete space is therefore not to exclude direct discretization as a baseline, but to replace a manually fixed partition with a data-adaptive symbolic representation under an explicit distortion constraint.
+\origtext{Pages 7 and 10}{Even under the same spatial resolution, the manner in which the signal is discretized can greatly affect the resulting predictability. ... To address the above challenges, we propose a quantization-based framework that leverages VQ-VAE to compress continuous mobility signals into a discrete latent space.}
+\revtext{End of Section 2.2 and start of Section 2.3, currently Pages 7 and 10}{A direct discretization of the original signal space $\mathcal{X}$ is a reasonable benchmark, but for high-dimensional continuous behavioral signals it can become data-inefficient because fine partitions create many rarely observed states. The learned latent space $\mathcal{Z}$ is introduced to obtain a discrete alphabet that is adapted to the data while remaining explicitly constrained by reconstruction distortion. We therefore view direct discretization as a baseline method and latent discretization as a representation-learning alternative that may achieve a better trade-off between fidelity and symbolic compressibility.}
+\limittext{At the current stage, we do not claim that the learned latent discretization must dominate every carefully tuned hand-crafted discretization. We instead present it as a principled and scalable alternative whose empirical advantage should be established through direct comparison.}
+\plantext{We will add an explicit benchmark against direct discretization baselines, including uniform spatial binning and simple vector quantization/k-means tokenization under matched distortion levels, to test whether the learned latent discretization provides measurable gains.}
+\apatext{Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of information theory} (2nd ed.). Wiley. Gallager, R. G. (1968). \textit{Information theory and reliable communication}. Wiley. van den Oord, A., Vinyals, O., \& Kavukcuoglu, K. (2017). Neural discrete representation learning. In \textit{Advances in Neural Information Processing Systems 30}.}
+
+\newpage
+\section{Response to Reviewer \#2}
+\subsection*{Overall Comments}
+\begin{mdframed}
+This manuscript proposes a framework for quantifying the intrinsic predictability of travel sequences by extending classical entropy-based predictability theory from discrete symbolic sequences to continuous, multi-dimensional mobility signals. The reviewer provides detailed methodological and empirical comments on novelty, benchmarks, assumptions, preprocessing, interpretation, and external validity.
+\end{mdframed}
+\subsection{Response}
+We thank the reviewer for the careful and constructive assessment. We agree that the contribution should be framed precisely, and we have revised the manuscript accordingly to avoid overstatement.
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.1}
+\begin{mdframed}
+From a methodological standpoint, the paper's main contribution is not the introduction of a new predictability concept, but rather a principled way to control for discretization-induced information loss when estimating predictability for continuous signals. The contribution should be interpreted as an adaptation and synthesis of existing methods rather than a fundamentally new modeling paradigm.
+\end{mdframed}
+\subsection{Response}
+We agree with this characterization and appreciate the precision of the reviewer's wording. Our intention is not to claim a fundamentally new behavioral paradigm, but rather to provide a principled predictability-distortion framework that adapts established ideas from information theory and learned quantization to continuous mobility signals. We therefore revise the manuscript to make this contribution statement more disciplined.
+\origtext{Pages 1 and 4}{In this study, we propose a unified framework that extends discrete-sequence predictability theory to continuous behavioral signals through a novel predictability-distortion framework ...}
+\revtext{Abstract and Introduction, currently Pages 1 and 4}{In this study, we develop an information-theoretic and representation-learning framework for estimating travel-sequence predictability under explicit reconstruction distortion. Rather than introducing a new behavioral law, the paper adapts and synthesizes entropy-based predictability theory, rate-distortion ideas, and learned discrete representations so that continuous multi-dimensional mobility signals can be evaluated on a common basis.}
+\apatext{Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of information theory} (2nd ed.). Wiley. Gallager, R. G. (1968). \textit{Information theory and reliable communication}. Wiley.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.2}
+\begin{mdframed}
+The paper occasionally overstates the implications of this contribution for ``robust and interpretable mobility models.'' High intrinsic predictability does not automatically translate into policy relevance, and the manuscript does not demonstrate how the proposed metric would concretely inform model design, segmentation, or policy evaluation beyond descriptive analysis.
+\end{mdframed}
+\subsection{Response}
+We agree. The submitted text was too strong in places, especially where we linked predictability directly to policy design. The current study demonstrates that the metric is informative about \emph{statistical regularity} and is meaningfully associated with forecasting difficulty; it does not by itself establish policy effectiveness or causal behavioral interpretation. We therefore narrow our claims and reposition the metric as a descriptive and comparative tool.
+\origtext{Page 27}{This framework provides a principled foundation for evaluating and comparing the predictability of complex, multi-dimensional mobility behaviors ... enabling new avenues for personalized modeling, policy design, and fairness-aware mobility analytics.}
+\revtext{Conclusion, currently Page 27}{This framework provides a principled basis for evaluating and comparing the statistical regularity of complex, multi-dimensional mobility behaviors under common distortion thresholds. In its current form, the metric is best interpreted as a descriptive and comparative quantity that may help identify heterogeneous behavioral regimes and benchmark predictive difficulty; direct policy use requires additional behavioral and causal analysis beyond the scope of this study.}
+\apatext{Cuttone, A., Lehmann, S., \& Gonzalez, M. C. (2018). Understanding predictability and exploration in human mobility. \textit{EPJ Data Science, 7}, 2. Song, C., Qu, Z., Blumm, N., \& Barabasi, A.-L. (2010). Limits of predictability in human mobility. \textit{Science, 327}(5968), 1018--1021.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.3}
+\begin{mdframed}
+The benchmarking strategy raises several concerns. A natural and necessary benchmark for predictability estimation, finite-order Markov and variable-order Markov models, is missing. Given the close theoretical connection between entropy rate, predictability, and Markovian dependence, the absence of such baselines makes it difficult to assess whether the proposed framework captures genuinely richer temporal structure or merely reproduces predictability achievable with simple stochastic sequence models.
+\end{mdframed}
+\subsection{Response}
+We agree that this is an important omission. The reviewer is right that the forecasting models in the current manuscript are only indirect comparators: they help show that higher predictability is associated with lower forecasting error, but they do not answer the more specific question of whether our framework captures temporal structure beyond what simple symbolic dependence models can already explain. Finite-order and variable-order Markov models are therefore highly relevant baselines and should have been discussed more explicitly.
+\origtext{Pages 21--23}{We train the following five predictive models listed in Table 4: Linear Regression, LightGBM, Bayesian Ridge Regression, XGBoost, and Long Short-Term Memory (LSTM) neural network.}
+\revtext{Experimental discussion and Conclusion, currently Pages 21--23 and 27}{The predictive-model benchmark in the current manuscript should be interpreted as an external validity check rather than as a complete baseline suite for entropy-based predictability estimation. In particular, finite-order and variable-order Markov baselines remain to be added for a more direct comparison with symbolic dependence models. We state this explicitly to avoid overstating the completeness of the current benchmark set.}
+\limittext{We have not yet completed the finite-order and variable-order Markov baseline study in the current revision. Accordingly, we no longer present the current benchmark set as sufficient for establishing superiority over simpler stochastic sequence models.}
+\plantext{We will construct token-sequence baselines using first-order, higher-order, and variable-order Markov models on the same discretized sequences, and compare their predictive accuracy and implied predictability against the proposed latent-space method.}
+\apatext{Song, C., Qu, Z., Blumm, N., \& Barabasi, A.-L. (2010). Limits of predictability in human mobility. \textit{Science, 327}(5968), 1018--1021. Yan, M., Li, S., Chan, C. A., Shen, Y., \& Yu, Y. (2021). Mobility prediction using a weighted Markov model based on mobile user classification. \textit{Sensors, 21}(5), 1740.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.4}
+\begin{mdframed}
+The framework relies on stationarity and ergodicity of individual travel sequences, assumptions that are particularly strong for long-horizon mobility and EV usage data. No robustness analysis is conducted to assess the sensitivity of predictability estimates to non-stationarity.
+\end{mdframed}
+\subsection{Response}
+We agree with the reviewer. This concern goes to the heart of how the empirical results should be interpreted. The theoretical framework uses stationarity and ergodicity as standard assumptions for defining asymptotic entropy quantities, but the empirical application should not be interpreted as evidence that each vehicle follows a globally stationary process over the full 16-month horizon. We therefore revise the manuscript so that the reader understands the reported predictability values as \emph{window-specific estimates under the adopted representation}, not as immutable behavioral constants.
+\origtext{Pages 5 and 27}{Assume that $\{Z_t\}$ is a stationary process. ... the framework assumes temporal stationarity in behavioral sequences, an assumption that may be violated in real-world settings with structural shifts or regime changes.}
+\revtext{Methodology and Conclusion, currently Pages 5 and 27}{The theoretical results are derived under a stationary/ergodic approximation, which provides the information-theoretic benchmark used in this paper. In the empirical application, however, these assumptions may be violated by calendar effects, usage regime changes, or external shocks. The reported predictability values should therefore be interpreted as period-specific estimates rather than universal constants of the underlying behavior.}
+\limittext{A full non-stationarity stress test has not yet been completed for the current submission. We therefore treat non-stationarity as an unresolved empirical issue rather than implying that it has already been ruled out.}
+\plantext{We will re-estimate predictability after splitting each vehicle's sequence by weekday/weekend and by seasonal period, and we will summarize whether rank ordering and mean predictability are stable across these partitions.}
+\apatext{Hamilton, J. D. (2020). \textit{Time series analysis}. Princeton University Press. Teixeira, D. d. C., Almeida, J. M., \& Viana, A. C. (2021). On estimating the predictability of human mobility: The role of routine. \textit{EPJ Data Science, 10}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.5}
+\begin{mdframed}
+The data preprocessing pipeline also warrants closer scrutiny. Linear interpolation of state-of-charge values, route completion using inferred shortest paths, and regular 10-minute sampling are likely to smooth trajectories substantially. Sensitivity analyses using alternative preprocessing strategies or different representations would be important to establish robustness.
+\end{mdframed}
+\subsection{Response}
+We agree and appreciate the specificity of the reviewer's concern. This is one of the most important caveats in the empirical study: if preprocessing smooths the trajectories, then part of the measured predictability may reflect the representation pipeline rather than the underlying behavior itself. Although the current manuscript already acknowledges this qualitatively, we agree that a qualitative caveat alone is not sufficient. We therefore strengthen the wording so that the current empirical estimate is not presented as preprocessing-robust.
+\origtext{Pages 18 and 20}{First, for each event, we interpolate the battery SOC at 10-minute intervals by linearly filling between the recorded start and end SOC values. ... It is important to note, however, that the high predictability observed in this study may be partially influenced by data preprocessing procedures.}
+\revtext{Data section and Conclusion, currently Pages 18 and 20}{Because the raw event-based records must be converted into regular time series, the reported predictability estimates are conditional on the chosen preprocessing pipeline, including linear SOC interpolation, route completion, and 10-minute temporal sampling. These operations may smooth short-term variability and thereby increase apparent regularity. The current results should therefore be interpreted as predictability under the adopted representation, not as preprocessing-invariant behavioral constants.}
+\limittext{We do not yet provide a full sensitivity table quantifying the effect of alternative interpolation and sampling choices. This remains a substantive open item, and we now acknowledge it more directly in the manuscript while tempering the associated empirical claims.}
+\plantext{We will test alternative SOC interpolation rules (nearest-neighbor and spline-based variants where feasible), alternative temporal resolutions (5, 15, and 30 minutes), and simplified route representations to quantify the sensitivity of predictability estimates to preprocessing.}
+\apatext{Boeing, G. (2017). OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks. \textit{Computers, Environment and Urban Systems, 65}, 126--139. Cuttone, A., Lehmann, S., \& Gonzalez, M. C. (2018). Understanding predictability and exploration in human mobility. \textit{EPJ Data Science, 7}, 2.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.6}
+\begin{mdframed}
+The behavioral interpretation of predictability remains limited. The latent representations learned by the VQ-VAE are not mapped to interpretable behavioral primitives, which limits the interpretability claims made in the paper.
+\end{mdframed}
+\subsection{Response}
+We agree and have revised the manuscript to distinguish more carefully between \emph{representation interpretability} and \emph{behavioral correlation}. In the current study, we do not claim that each learned latent code corresponds to a directly interpretable behavioral primitive. Rather, we show that the resulting predictability scores are systematically associated with observable summaries such as SOC mean, SOC variability, and spatial entropy. This supports behavioral relevance at the aggregate level, but not one-to-one semantic interpretation of every code.
+\origtext{Pages 24--27}{Collectively, the findings confirm that our metric captures the expected relationships among usage patterns, SOC variability, and spatial entropy, supporting its practical utility. ... provide interpretable, behavior-consistent findings.}
+\revtext{Results and Conclusion, currently Pages 24--27}{The present results support behavioral interpretation primarily at the level of \emph{associations} between predictability and observable usage indicators, rather than through a direct semantic decoding of individual latent tokens. We therefore interpret the learned representation as a compact computational summary of behavioral regularity, and we avoid claiming that the latent codebook itself has a fully transparent behavioral semantics.}
+\apatext{Cuttone, A., Lehmann, S., \& Gonzalez, M. C. (2018). Understanding predictability and exploration in human mobility. \textit{EPJ Data Science, 7}, 2. Li, Z., Xu, Z., Chen, Z., Xie, C., Chen, G., \& Zhong, M. (2023). An empirical analysis of electric vehicles' charging patterns. \textit{Transportation Research Part D: Transport and Environment, 117}, 103651.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 2.7}
+\begin{mdframed}
+The empirical application, though large-scale, is contextually narrow. The focus on EV operational data from a single city with dense sensing and structured usage patterns limits external validity. Claims about general travel behavior predictability should be complemented by applications to more general-purpose, open-access travel datasets (e.g., the U.S. National Household Travel Survey).
+\end{mdframed}
+\subsection{Response}
+We agree. The EV dataset used here is valuable because it is dense, long-horizon, and behaviorally rich, but it is also clearly context-specific. The sensing quality, operational regularity, and charging structure of this fleet may all contribute to higher apparent predictability than would be observed in more heterogeneous general-purpose travel datasets. It would therefore be too strong to generalize the numerical levels reported here directly to ``travel behavior'' in a broad sense. We now narrow the scope of our claims accordingly.
+\origtext{Pages 1 and 27}{Large-scale experiments using 16 months of operational data from 3,777 electric vehicles in Shanghai further demonstrate its effectiveness ... This framework provides ... new avenues for personalized modeling, policy design, and fairness-aware mobility analytics.}
+\revtext{Abstract and Conclusion, currently Pages 1 and 27}{The empirical study is a large-scale EV case study based on dense operational data from Shanghai. Accordingly, the reported predictability levels should be interpreted as context-specific estimates for this sensing-rich EV setting. Extending the framework to broader and more heterogeneous travel datasets is an important next step before making wider claims about general travel behavior predictability.}
+\limittext{We are not yet able to add a second open-access travel dataset in the current revision. We therefore present the Shanghai EV application as a feasibility case study and treat broader external validity as an explicit limitation.}
+\apatext{Goulet-Langlois, G., Koutsopoulos, H. N., Zhao, Z., \& Zhao, J. (2018). Measuring regularity of individual travel patterns. \textit{IEEE Transactions on Intelligent Transportation Systems, 19}(5), 1583--1592. Song, C., Qu, Z., Blumm, N., \& Barabasi, A.-L. (2010). Limits of predictability in human mobility. \textit{Science, 327}(5968), 1018--1021.}
+
+\newpage
+\section{Response to Reviewer \#3}
+\subsection*{Overall Comments}
+\begin{mdframed}
+This study proposes a unified framework for quantifying the intrinsic predictability of travel sequence signals, by introducing a novel predictability-distortion formulation that enables consistent evaluation of both discrete and continuous signals. The proposed approach is validated using synthetic data and real-world EV data. Source codes have been made publicly available. However, there are still a few issues to be addressed before publication.
+\end{mdframed}
+\subsection{Response}
+We thank the reviewer for the positive comments on transparency and reproducibility. We also appreciate the specific suggestions, which help us improve both the exposition and the empirical presentation.
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 3.1}
+\begin{mdframed}
+(1) Clarification of the relationship between continuous behavioral signals and discretization. The paper uses trajectory data sampled at 10-minute intervals, which is discrete in the time dimension, while the research focuses on the continuity of the state space (GPS coordinates, SOC). It is suggested to add clear definitions in the introduction or methods section to clearly distinguish between: a. Time discretization: Sampling constraints in the study (10-minute sampling interval); b. Continuity of the state space: GPS coordinates and battery level are basically continuous variables; c. Representation discretization: The discrete latent representation learned by VQ-VAE, and its difference from traditional predefined discretization (such as spatial grids)
+\end{mdframed}
+\subsection{Response}
+We fully agree. This distinction is conceptually important, and the submitted version did not separate the three notions sharply enough. In the revision, we therefore introduce an explicit three-part clarification: temporal sampling is discrete because the data are observed at 10-minute intervals; the state space remains continuous because SOC and GPS are real-valued quantities; and representation discretization refers to the learned tokenization produced by the VQ-VAE, which is distinct from manually imposed grids.
+\origtext{Pages 10 and 18}{where $\mathcal{Z}=\{1,\dots,K\}$ is a finite alphabet of size $K$. ... Through this process, we transform both driving and charging events into regularized time series of SOC and GPS changes, sampled every 10 minutes.}
+\revtext{Introduction/Methods clarification, currently Pages 10 and 18}{The study involves three different notions that should be distinguished clearly. First, \emph{time discretization} refers to the observational sampling interval: the continuous behavioral process is recorded every 10 minutes. Second, \emph{state-space continuity} refers to the fact that variables such as GPS coordinates and SOC are fundamentally real-valued. Third, \emph{representation discretization} refers to the learned symbolic latent sequence produced by the VQ-VAE. Unlike a predefined spatial grid, this latent discretization is learned from data subject to an explicit reconstruction-distortion constraint.}
+\apatext{Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of information theory} (2nd ed.). Wiley. van den Oord, A., Vinyals, O., \& Kavukcuoglu, K. (2017). Neural discrete representation learning. In \textit{Advances in Neural Information Processing Systems 30}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 3.2}
+\begin{mdframed}
+(2) Discussion of non-stationarity issues. The paper assumes that the behavioral sequences are stationary in the methods section (Sections 2.1-2.2). However, human mobility behavior is often affected by special events, policy interventions, etc., exhibiting non-stationarity. The authors are advised to add a section on possible extensions for non-stationarity scenarios to the experimental section. This section should also analyze the changes in the predictability of electric vehicle behavior across different time periods (e.g., weekdays versus weekends, different seasons) to verify the robustness of the method.
+\end{mdframed}
+\subsection{Response}
+We agree and thank the reviewer for the concrete suggestion. This issue deserves more than a brief caveat because it directly affects how robust the reported predictability values should be considered. As noted above, the present theory uses stationarity as a benchmark assumption, but we do not intend to claim that the observed EV behavior is strictly stationary under all temporal regimes. We therefore strengthen the discussion of this issue in the limitations section and outline a more concrete extension path in the experiments section.
+\origtext{Pages 5 and 27}{Assume that $\{Z_t\}$ is a stationary process. ... relaxing this assumption and extending the framework to handle non-stationary behavior would enhance its applicability in dynamic environments.}
+\revtext{Methodology/Conclusion, currently Pages 5 and 27}{The current framework provides predictability estimates under a stationary benchmark assumption. For empirical mobility data with temporal regime shifts, these estimates should be interpreted conditional on the observation window. Extending the framework to explicitly model non-stationary behavior is an important next step and is now emphasized more clearly in the manuscript.}
+\limittext{We do not yet present a completed non-stationarity subsection with period-by-period empirical estimates in the present revision. We therefore avoid suggesting that temporal robustness has already been established and revise the wording of the manuscript accordingly.}
+\plantext{We will add an experimental extension that compares predictability across weekday/weekend partitions and seasonal partitions, and we will report whether both mean predictability and vehicle-level rank ordering remain stable.}
+\apatext{Hamilton, J. D. (2020). \textit{Time series analysis}. Princeton University Press. Teixeira, D. d. C., Almeida, J. M., \& Viana, A. C. (2021). On estimating the predictability of human mobility: The role of routine. \textit{EPJ Data Science, 10}.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 3.3}
+\begin{mdframed}
+(3) Sensitivity Analysis. The following sensitivity analyses are suggested: Analyze the impact of different sampling intervals (5 minutes, 15 minutes, 30 minutes) on predictability estimation; compare the impact of other interpolation methods (e.g., spline interpolation, nearest neighbor interpolation) on predictability estimation; analyze the impact of code book size $K$ on the results.
+\end{mdframed}
+\subsection{Response}
+We appreciate these very actionable suggestions. These are exactly the kinds of analyses that would most effectively strengthen confidence in the empirical section. We agree that the current manuscript does not yet provide this level of robustness evidence. Rather than overstating the present version, we now acknowledge these items explicitly as outstanding empirical checks and identify them as the most important next additions.
+\origtext{Pages 18--20 and 27}{Through this process, we transform both driving and charging events into regularized time series ... sampled every 10 minutes. ... Future work could systematically examine how varying levels of information disclosure affect predictability ...}
+\revtext{Experiments/Conclusion, currently Pages 18--20 and 27}{The empirical predictability estimates reported here are conditional on the chosen temporal sampling interval, preprocessing scheme, and model capacity, including the codebook size $K$. A full robustness assessment with respect to these design choices is not yet included in the current manuscript and should be treated as an important extension rather than an already established result.}
+\plantext{We will add three sensitivity analyses: (i) recomputing predictability at 5-, 15-, and 30-minute sampling intervals; (ii) comparing linear interpolation with nearest-neighbor and spline-based alternatives where feasible; and (iii) varying the codebook size $K$ to study the trade-off between representation granularity, entropy, and distortion.}
+\apatext{Agustsson, E., Mentzer, F., Tschannen, M., Cavigelli, L., Timofte, R., Benini, L., \& Van Gool, L. (2017). Soft-to-hard vector quantization for end-to-end learning compressible representations. In \textit{Advances in Neural Information Processing Systems 30}. Boeing, G. (2017). OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks. \textit{Computers, Environment and Urban Systems, 65}, 126--139. Cuttone, A., Lehmann, S., \& Gonzalez, M. C. (2018). Understanding predictability and exploration in human mobility. \textit{EPJ Data Science, 7}, 2.}
+
+\noindent\rule{16.5cm}{1.0pt}
+
+\subsection{Reviewer Comment 3.4}
+\begin{mdframed}
+(4) Representative Vehicle Selection Criteria. The paper shows representative vehicles with high, medium, and low predictability, but the selection criteria are not clearly stated. How these vehicles were selected from the 3,777 vehicles (may be according to cluster centroids?); Whether statistical significance tests were performed to ensure that the selected representative vehicles reflect the overall distribution characteristics.
+\end{mdframed}
+\subsection{Response}
+We thank the reviewer for this comment. The reviewer is correct that the original presentation could make the examples seem more representative than they actually are. In fact, the intended rule was a deterministic ranking by the D3 predictability metric, followed by selecting the highest, lowest, and median vehicles. These cases are useful for visualization, but they are still illustrative cases rather than statistical summaries of the full sample. No formal significance test was intended for these panels, and we now make that distinction much more explicit so that the figures are not over-interpreted.
+\origtext{Page 24}{We identify the vehicles with the highest, lowest, and median predictability scores based on the D3-level distortion metric. As illustrated in Figure 10, we plot the SOC sequences of these three representative vehicles over time.}
+\revtext{Results section, currently Page 24}{The vehicles shown in Figures 10 and 11 are selected deterministically as the highest-, median-, and lowest-predictability vehicles under the D3 distortion level. These cases are presented as illustrative examples to help visualize behavioral differences across the predictability spectrum; they are not intended to serve as statistically representative centroids of the full population. We therefore avoid inferential language and clarify the selection rule directly in the main text and caption.}
+\apatext{Li, Z., Xu, Z., Chen, Z., Xie, C., Chen, G., \& Zhong, M. (2023). An empirical analysis of electric vehicles' charging patterns. \textit{Transportation Research Part D: Transport and Environment, 117}, 103651. Goulet-Langlois, G., Koutsopoulos, H. N., Zhao, Z., \& Zhao, J. (2018). Measuring regularity of individual travel patterns. \textit{IEEE Transactions on Intelligent Transportation Systems, 19}(5), 1583--1592.}
+
+\end{document}

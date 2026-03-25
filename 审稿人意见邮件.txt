@@ -1,0 +1,82 @@
+Manuscript Number: TRC-25-02647  
+
+Quantifying Travel Sequence Predictability via a Constrained Vector-Quantized Variational Autoencoder
+
+Dear Dr Chen,
+
+Thank you for submitting your manuscript to Transportation Research Part C.
+
+I have completed my evaluation of your manuscript. The reviewers recommend reconsideration of your manuscript following major revision. I invite you to resubmit your manuscript after addressing the comments below. Please resubmit your revised manuscript by Mar 06, 2026.
+
+When revising your manuscript, please consider all issues mentioned in the reviewers' comments carefully: please outline every change made in response to their comments and provide suitable rebuttals for any comments not addressed. Please note that your revised submission may need to be re-reviewed. 
+
+To submit your revised manuscript, please log in as an author at https://www.editorialmanager.com/trc/, and navigate to the "Submissions Needing Revision" folder.  
+
+Research Elements (optional)
+This journal encourages you to share research objects - including your raw data, methods, protocols, software, hardware and more – which support your original research article in a Research Elements journal. Research Elements are open access, multidisciplinary, peer-reviewed journals which make the objects associated with your research more discoverable, trustworthy and promote replicability and reproducibility. As open access journals, there may be an Article Publishing Charge if your paper is accepted for publication. Find out more about the Research Elements journals at https://www.elsevier.com/authors/tools-and-resources/research-elements-journals?dgcid=ec_em_research_elements_email.
+
+
+Transportation Research Part C values your contribution and I look forward to receiving your revised manuscript.
+
+Kind regards,  
+Lijun Sun  
+Area Editor  
+
+Transportation Research Part C
+
+Editor and Reviewer comments:
+
+
+
+Reviewer #1: Although the topic of this paper sounds interesting, it is not easy for me to follow and understand this paper. My comments and questions are as follows.
+1. What is the exact meaning of "predictability"? The authors introduced it in section 2.1, but I still can't find its formal definition. In this section, I only see a bunch of definitions of entropies (maybe the authors used them to measure "predictability".)
+2. I don't understand Figure 1. Do the A and B points have the same locations in the left and right figures? What are differences in these two figures?
+3. As for Figure 2, the authors should explain in detail what the encoder exactly does. Besides, I would encourage the authors to explain the purposes of the encoder and decoder in the abstract.
+4. The VQ-VAE framework seems out of the blue, at least to me. Why did the author suddenly mention the "VQ-VAE" on page 10? Can't we use the vanilla VAE? Please justify it.
+5. The authors also should add more explanations on some technical terms like "codebook" in VQ-VAE.
+6. Based on my understandings, VAE should require some additional sampling or randomness to be injected. Where are them in Figure 3?
+7. I have a major concern about the assumption of "stationary processes". All the theories the authors presented are built on stationary stochastic processes. Did the authors really believe the travel pattern in Shanghai is stationary, independent of the season?
+8. My last question is: what if we do direct discretization over the continuous space X instead of transforming X into the discretize Z? Can the naïve discretization beat the author's method if discretization is fine enough?
+
+
+
+Reviewer #2: This manuscript proposes a framework for quantifying the intrinsic predictability of travel sequences by extending classical entropy-based predictability theory from discrete symbolic sequences to continuous, multi-dimensional mobility signals. My feedback is as follows.
+
+From a methodological standpoint, the paper's main contribution is not the introduction of a new predictability concept, but rather a principled way to control for discretization-induced information loss when estimating predictability for continuous signals. The predictability-distortion framing provides a coherent extension of discrete-sequence theory and offers a useful unifying perspective. However, the methodological novelty is primarily theoretical-computational rather than behavioral. The framework adapts established tools from information theory and neural compression (rate-distortion theory, VQ-VAE, augmented Lagrangian optimization) to the mobility context, but it does not introduce new behavioral assumptions, decision rules, or economic structure. As such, the contribution should be interpreted as an adaptation and synthesis of existing methods rather than a fundamentally new modeling paradigm.
+
+Relative to the state of the art, the key added value lies in conditioning predictability estimates on explicit distortion constraints, which helps address the arbitrariness in discretization choices that has affected earlier entropy-based studies. This is a meaningful conceptual clarification. However, the paper occasionally overstates the implications of this contribution for "robust and interpretable mobility models." High intrinsic predictability does not automatically translate into policy relevance, and the manuscript does not demonstrate how the proposed metric would concretely inform model design, segmentation, or policy evaluation beyond descriptive analysis.
+
+The benchmarking strategy raises several concerns. The synthetic Gaussian-Markov experiment is appropriate and valuable, as it demonstrates that the proposed method can recover known rate-distortion and predictability bounds under controlled conditions. Beyond this, however, the empirical benchmarks are limited. Forecasting models such as linear regression, tree-based methods, Bayesian regression, and LSTM networks are used only indirectly, via correlation with predictability scores, rather than as direct competitors. These models do not represent state-of-the-art alternatives for predictability estimation or sequence representation learning. A natural and necessary benchmark for predictability estimation, finite-order Markov and variable-order Markov models, is missing. Given the close theoretical connection between entropy rate, predictability, and Markovian dependence, the absence of such baselines makes it difficult to assess whether the proposed framework captures genuinely richer temporal structure or merely reproduces predictability achievable with simple stochastic sequence models.
+
+A further methodological concern relates to strong assumptions that are insufficiently stress-tested. The framework relies on stationarity and ergodicity of individual travel sequences, assumptions that are particularly strong for long-horizon mobility and EV usage data. Behavioral regimes may shift due to seasonality, policy interventions, or changes in usage patterns, yet no robustness analysis is conducted to assess the sensitivity of predictability estimates to non-stationarity. Without such analysis, it is difficult to interpret predictability as an intrinsic behavioral property rather than an artifact of averaging across regimes.
+
+The data preprocessing pipeline also warrants closer scrutiny. Linear interpolation of state-of-charge values, route completion using inferred shortest paths, and regular 10-minute sampling are likely to smooth trajectories substantially. This smoothing mechanically reduces entropy and may inflate predictability estimates. While the authors acknowledge this possibility qualitatively, the magnitude of the effect is not quantified. Given that predictability is the central outcome of the study, sensitivity analyses using alternative preprocessing strategies or different representations would be important to establish robustness.
+
+The behavioral interpretation of predictability remains limited. Differences in predictability across vehicles are largely explained ex post through correlations with SOC mean, SOC variance, and spatial entropy. While these relationships are intuitive, they position predictability as a summary measure of regularity rather than a behavioral construct tied to preferences, constraints, or decision-making processes. The latent representations learned by the VQ-VAE are not mapped to interpretable behavioral primitives, which limits the interpretability claims made in the paper.
+
+Finally, the empirical application, though large-scale, is contextually narrow. The focus on EV operational data from a single city with dense sensing and structured usage patterns limits external validity. Claims about general travel behavior predictability should therefore be complemented by applications to more general-purpose, open-access travel datasets (e.g., the U.S. National Household Travel Survey).
+
+
+
+
+
+Reviewer #3: This study proposes a unified framework for quantifying the intrinsic predictability of travel sequence signals, by introducing a novel predictability-distortion formulation that enables consistent evaluation of both discrete and continuous signals. The proposed approach is validated using synthetic data and real-world EV data. It is also commendable that the source codes have been made publicly available for transparency and reproducibility. However, there are still a few issues to be addressed before publication, which are described in more details below.
+
+(1) Clarification of the relationship between continuous behavioral signals and discretization.
+The paper uses trajectory data sampled at 10-minute intervals, which is discrete in the time dimension, while the research focuses on the continuity of the state space (GPS coordinates, SOC). It is suggested to add clear definitions in the introduction or methods section to clearly distinguish between: a. Time discretization: Sampling constraints in the study (10-minute sampling interval); b. Continuity of the state space: GPS coordinates and battery level are basically continuous variables; c. Representation discretization: The discrete latent representation learned by VQ-VAE, and its difference from traditional predefined discretization (such as spatial grids)
+
+(2) Discussion of non-stationarity issues.
+The paper assumes that the behavioral sequences are stationary in the methods section (Sections 2.1-2.2). However, human mobility behavior is often affected by special events, policy interventions, etc., exhibiting non-stationarity. The authors are advised to add a section on possible extensions for non-stationarity scenarios to the experimental section. This section should also analyze the changes in the predictability of electric vehicle behavior across different time periods (e.g., weekdays versus weekends, different seasons) to verify the robustness of the method.
+
+(3) Sensitivity Analysis.
+The following sensitivity analyses are suggested: Analyze the impact of different sampling intervals (5 minutes, 15 minutes, 30 minutes) on predictability estimation; compare the impact of other interpolation methods (e.g., spline interpolation, nearest neighbor interpolation) on predictability estimation; analyze the impact of code book size K on the results.
+
+(4) Representative Vehicle Selection Criteria.
+The paper shows representative vehicles with high, medium, and low predictability, but the selection criteria are not clearly stated. How these vehicles were selected from the 3,777 vehicles (may be according to cluster centroids?); Whether statistical significance tests were performed to ensure that the selected representative vehicles reflect the overall distribution characteristics.
+
+
+
+
+*****
+
+More information and support 
